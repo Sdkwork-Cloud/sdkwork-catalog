@@ -1,0 +1,10 @@
+{
+  "schemaVersion": 1,
+  "kind": "sdkwork.component.spec",
+  "component": {
+    "name": "sdkwork-catalog-workspace",
+    "domain": "commerce",
+    "capability": "catalog",
+    "root": "sdkwork-catalog"
+  }
+}
