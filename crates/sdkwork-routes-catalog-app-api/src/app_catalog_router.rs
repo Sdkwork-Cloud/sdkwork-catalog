@@ -16,7 +16,7 @@ use sdkwork_commerce_merchandise_repository_sqlx::{
     PostgresCommerceCatalogStore, SqliteCommerceCatalogStore,
 };
 use sdkwork_iam_context_service::IamAppContext;
-use sdkwork_router_merchandise_app_api::{
+use sdkwork_routes_merchandise_app_api::{
     catalog_system_response, map_address, map_attribute, map_cart_item, map_category,
     map_price_list_item, map_sku, map_spu, not_found_response, unauthorized_response,
     validation_response, AddCartItemBody, AttributeQueryParams, CatalogApiResult, CatalogState,

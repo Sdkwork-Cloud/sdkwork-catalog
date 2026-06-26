@@ -33,7 +33,7 @@ Migration status: **complete**.
 | --- | --- | --- |
 | Domain commands/queries | `scaffold` | Business validation and ports |
 | SQL repositories | `sdkwork-commerce-catalog-repository-sqlx` | Tenant-scoped persistence |
-| HTTP route builders | sdkwork-router-catalog-app-api | `build_*_router` exports without IAM |
+| HTTP route builders | sdkwork-routes-catalog-app-api | `build_*_router` exports without IAM |
 | IAM / gateway composition | `sdkwork-commerce` | Thin wrappers only |
 | OpenAPI / SDK authority | `sdkwork-commerce/sdks/` | Composed commerce SDK families |
 
@@ -42,7 +42,7 @@ Migration status: **complete**.
 Standard 7-crate capability workspace:
 
 - `crates/sdkwork-commerce-catalog-repository-sqlx/`
-- `crates/sdkwork-router-catalog-app-api/`
+- `crates/sdkwork-routes-catalog-app-api/`
 - `crates/sdkwork-catalog-database-host/`
 - `crates/sdkwork-catalog-service-host/`
 - `crates/sdkwork-catalog-api-server/`

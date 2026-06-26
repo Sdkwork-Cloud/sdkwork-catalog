@@ -16,6 +16,7 @@ pub use web_bootstrap::wrap_router_with_web_framework_from_env;
 use axum::Router;
 use sdkwork_catalog_service_host::CatalogServiceHost;
 use sdkwork_database_sqlx::DatabasePool;
+use sqlx::SqlitePool;
 use std::sync::Arc;
 
 /// Standalone catalog api-server entry: resolves browse/open routes from the service host pool.
@@ -28,4 +29,8 @@ pub async fn build_catalog_app_router_with_framework(host: Arc<CatalogServiceHos
             build_catalog_app_router_with_framework_postgres(pool.clone()).await
         }
     }
+}
+
+pub async fn gateway_mount(pool: SqlitePool) -> Router {
+    build_catalog_app_router_with_framework_sqlite(pool).await
 }
