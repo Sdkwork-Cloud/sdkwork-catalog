@@ -10,8 +10,15 @@ pub struct ApplicationAssembly {
 }
 
 pub async fn assemble_application_router() -> ApplicationAssembly {
+    let host = Arc::new(
+        CatalogServiceHost::from_env()
+            .await
+            .expect("catalog service host bootstrap failed"),
+    );
     let mut router = Router::new();
-    router = router.merge(sdkwork_routes_catalog_app_api::gateway_mount(pool).await);
+    router = router.merge(
+        sdkwork_routes_catalog_app_api::build_catalog_app_router_with_framework(host.clone()).await,
+    );
     router = router.merge(sdkwork_routes_catalog_backend_api::gateway_mount(host).await);
     ApplicationAssembly { router }
 }
