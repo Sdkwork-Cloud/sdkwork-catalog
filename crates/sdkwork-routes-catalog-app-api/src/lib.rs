@@ -19,7 +19,7 @@ use sdkwork_database_sqlx::DatabasePool;
 use sqlx::SqlitePool;
 use std::sync::Arc;
 
-/// Standalone catalog api-server entry: resolves browse/open routes from the service host pool.
+/// Catalog standalone-gateway entry: resolves browse/open routes from the service host pool.
 pub async fn build_catalog_app_router_with_framework(host: Arc<CatalogServiceHost>) -> Router {
     match host.database_pool() {
         DatabasePool::Sqlite(pool, _) => {

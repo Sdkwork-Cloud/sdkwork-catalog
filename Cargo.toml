@@ -7,7 +7,7 @@ members = [
   "crates/sdkwork-routes-catalog-backend-api",
   "crates/sdkwork-catalog-database-host",
   "crates/sdkwork-catalog-service-host",
-  "crates/sdkwork-catalog-api-server",
+  "crates/sdkwork-catalog-standalone-gateway",
 ]
 
 [workspace.package]

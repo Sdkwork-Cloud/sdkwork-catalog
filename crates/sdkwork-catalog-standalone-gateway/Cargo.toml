@@ -1,12 +1,12 @@
 [package]
-name = "sdkwork-catalog-api-server"
+name = "sdkwork-catalog-standalone-gateway"
 version.workspace = true
 edition.workspace = true
 license.workspace = true
 publish.workspace = true
 
 [[bin]]
-name = "catalog-server"
+name = "sdkwork-catalog-standalone-gateway"
 path = "src/main.rs"
 
 [dependencies]

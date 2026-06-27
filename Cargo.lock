@@ -1586,6 +1586,7 @@ name = "sdkwork-catalog-api-server"
 version = "0.1.0"
 dependencies = [
  "axum",
+ "sdkwork-catalog-gateway-assembly",
  "sdkwork-catalog-service-host",
  "sdkwork-routes-catalog-app-api",
  "sdkwork-routes-catalog-backend-api",
@@ -1605,6 +1606,17 @@ dependencies = [
  "sdkwork-database-lifecycle",
  "sdkwork-database-spi",
  "sdkwork-database-sqlx",
+]
+
+[[package]]
+name = "sdkwork-catalog-gateway-assembly"
+version = "0.1.0"
+dependencies = [
+ "axum",
+ "sdkwork-catalog-service-host",
+ "sdkwork-routes-catalog-app-api",
+ "sdkwork-routes-catalog-backend-api",
+ "tokio",
 ]
 
 [[package]]
@@ -1679,6 +1691,18 @@ dependencies = [
 ]
 
 [[package]]
+name = "sdkwork-database-id"
+version = "0.1.0"
+dependencies = [
+ "sdkwork-database-config",
+ "sdkwork-database-sqlx",
+ "sdkwork-id-core",
+ "sqlx",
+ "tokio",
+ "tracing",
+]
+
+[[package]]
 name = "sdkwork-database-lifecycle"
 version = "0.1.0"
 dependencies = [
@@ -1728,6 +1752,7 @@ dependencies = [
  "base64",
  "chrono",
  "rand_core 0.6.4",
+ "sdkwork-database-id",
  "sdkwork-iam-context-service",
  "sdkwork-iam-module-registry",
  "sha2",
@@ -1781,6 +1806,13 @@ dependencies = [
  "sha2",
  "sqlx",
  "urlencoding",
+ "uuid",
+]
+
+[[package]]
+name = "sdkwork-id-core"
+version = "0.1.0"
+dependencies = [
  "uuid",
 ]
 
@@ -1855,6 +1887,7 @@ dependencies = [
  "sdkwork-iam-web-adapter",
  "sdkwork-merchandise-service-host",
  "sdkwork-web-axum",
+ "sdkwork-web-bootstrap",
  "sdkwork-web-core",
  "serde",
  "serde_json",
@@ -1904,6 +1937,7 @@ dependencies = [
  "sdkwork-web-core",
  "serde",
  "serde_json",
+ "sqlx",
  "tokio",
  "tracing",
  "tracing-subscriber",
@@ -2033,6 +2067,12 @@ dependencies = [
  "cpufeatures",
  "digest",
 ]
+
+[[package]]
+name = "sha1_smol"
+version = "1.0.1"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "bbfa15b3dddfee50a0fff136974b3e1bde555604ba463834a7eb7deb6417705d"
 
 [[package]]
 name = "sha2"
@@ -2767,6 +2807,7 @@ dependencies = [
  "getrandom 0.4.3",
  "js-sys",
  "serde_core",
+ "sha1_smol",
  "wasm-bindgen",
 ]
 

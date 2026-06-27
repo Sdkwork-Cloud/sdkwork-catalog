@@ -6,7 +6,7 @@ SDKWork commerce **catalog** capability building-block repository (domain `comme
 - Composition consumer: `../sdkwork-clawrouter/vendor/sdkwork-commerce` (archived transitional platform snapshot)
 - Domain service: `crates/sdkwork-commerce-catalog-service/`
 - Repository SQL: `crates/sdkwork-commerce-catalog-repository-sqlx/`
-- HTTP API server: `crates/sdkwork-catalog-api-server/`
+- HTTP API server: `crates/sdkwork-catalog-standalone-gateway/`
 
 ## Quick start
 

@@ -8,13 +8,13 @@ Specs: REQUIREMENTS_SPEC.md, DOCUMENTATION_SPEC.md
 
 ## Document Map
 
-- Platform split alignment (commerce T0): `../sdkwork-commerce/docs/architecture/tech/TECH-2026-06-24-commerce-capability-repo-split-alignment.md`
+- Commerce repository dissolution: `../sdkwork-specs/MIGRATION_SPEC.md` §8
 
 ## 1. Background And Problem
 
 Public and integrator-facing catalog browse surfaces should not share the same ownership boundary as merchant admin merchandise mutations.
 
-This repository is a **T1 commerce capability building block**. `sdkwork-commerce` remains the T0 composition layer (gateway, IAM wrappers, composed SDK). This repository owns domain logic, persistence, and HTTP route builders for the **catalog** capability.
+This repository is a **T1 commerce capability building block**. The `sdkwork-commerce` monolith has been dissolved; this repository is self-contained with its own domain logic, persistence, HTTP route builders, API server, and IAM middleware for the **catalog** capability.
 
 ## 2. Target Users
 
@@ -53,12 +53,12 @@ Migration status: **complete**.
 
 ## 7. Phases
 
-- Phase 0 (complete): repository scaffold and api-server health.
+- Phase 0 (complete): repository scaffold and standalone-gateway health.
 - Phase 3 (complete): browse/open app routes owned by catalog app router; read adapter in catalog repository crate.
 
 ## 8. Linked Requirements
 
-- Commerce capability split alignment: `../sdkwork-commerce/docs/architecture/tech/TECH-2026-06-24-commerce-capability-repo-split-alignment.md`
+- Commerce repository dissolution: `../sdkwork-specs/MIGRATION_SPEC.md` §8
 - Component contract: `specs/component.spec.json` (when present)
 - Machine contracts: local `specs/`, future `apis/`, and generated `sdks/`
 

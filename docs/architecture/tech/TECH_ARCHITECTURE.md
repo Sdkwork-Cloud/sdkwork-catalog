@@ -7,15 +7,15 @@ Specs: ARCHITECTURE_DECISION_SPEC.md, RUST_CODE_SPEC.md, API_SPEC.md, WEB_FRAMEW
 
 ## Document Map
 
-- [TECH split alignment (commerce T0)](../sdkwork-commerce/docs/architecture/tech/TECH-2026-06-24-commerce-capability-repo-split-alignment.md)
+- Commerce repository dissolution: `../sdkwork-specs/MIGRATION_SPEC.md` §8
 
 ## 1. Architecture Overview
 
-`sdkwork-catalog` is a **T1 capability repository** in the commerce domain. It exposes domain services, SQL repositories, and HTTP route builders. `sdkwork-commerce` composes these crates at runtime:
+`sdkwork-catalog` is a **T1 capability repository** in the commerce domain. It owns domain services, SQL repositories, HTTP route builders, and a standalone gateway with IAM middleware. The `sdkwork-commerce` monolith has been dissolved; each T1 capability repository is self-contained.
 
 ```text
 T1 catalog crate  →  build_*_router()     (no IAM)
-T0 commerce         →  with_request_identity / with_backend_request_identity
+T1 standalone-gateway     →  with_request_identity / with_backend_request_identity
 ```
 
 Migration status: **complete**.
@@ -25,7 +25,7 @@ Migration status: **complete**.
 - **Rust** domain services and SQLx repositories (`RUST_CODE_SPEC.md`)
 - **Axum** HTTP routers integrated via `sdkwork-web-framework` (`WEB_FRAMEWORK_SPEC.md`)
 - **sqlx** for Postgres/SQLite repository implementations (`DATABASE_FRAMEWORK_SPEC.md`)
-- **Sibling path dependencies** from `sdkwork-commerce/Cargo.toml` — no duplicated domain crates in commerce
+- **Sibling path dependencies** from this repository's `Cargo.toml` — cross-T1 references use `sdkwork_commerce_*` crate names per `sdkwork-<domain>-<capability>-service` naming
 
 ## 3. System Boundaries And Modules
 
@@ -34,8 +34,8 @@ Migration status: **complete**.
 | Domain commands/queries | `scaffold` | Business validation and ports |
 | SQL repositories | `sdkwork-commerce-catalog-repository-sqlx` | Tenant-scoped persistence |
 | HTTP route builders | sdkwork-routes-catalog-app-api | `build_*_router` exports without IAM |
-| IAM / gateway composition | `sdkwork-commerce` | Thin wrappers only |
-| OpenAPI / SDK authority | `sdkwork-commerce/sdks/` | Composed commerce SDK families |
+| IAM / gateway composition | `sdkwork-catalog-standalone-gateway` | IAM middleware at T1 standalone-gateway |
+| OpenAPI / SDK authority | `sdkwork-catalog/sdks/` | Per-T1 SDK families |
 
 ## 4. Directory And Package Layout
 
@@ -45,20 +45,20 @@ Standard 7-crate capability workspace:
 - `crates/sdkwork-routes-catalog-app-api/`
 - `crates/sdkwork-catalog-database-host/`
 - `crates/sdkwork-catalog-service-host/`
-- `crates/sdkwork-catalog-api-server/`
+- `crates/sdkwork-catalog-standalone-gateway/`
 
 No PC application root in this repository yet.
 
 ## 5. API, SDK, And Data Ownership
 
 - App API prefix: `/app/v3/api/catalog`
-- Backend API: composed through commerce T0 where applicable.
+- Backend API: served through the T1 `*-standalone-gateway` where applicable.
 - Table prefix: `commerce_` for capability-owned tables (`DOMAIN_SPEC` domain=commerce)
-- Public SDK consumption: generated **commerce** SDK families at T0; do not hand-craft raw HTTP (`SDK_SPEC.md`)
+- Public SDK consumption: generated per-T1 SDK families; do not hand-craft raw HTTP (`SDK_SPEC.md`)
 
 ## 6. Security, Privacy, And Observability
 
-- Authentication and tenant context are applied at **commerce T0** IAM middleware; handlers read `IamAppContext` from extensions.
+- Authentication and tenant context are applied at the T1 `*-standalone-gateway` IAM middleware; handlers read `IamAppContext` from extensions.
 - Write routes require idempotency and request-hash headers where applicable (`API_SPEC.md`, `SECURITY_SPEC.md`).
 - Ledger, payment, and account mutations must fail closed on validation errors.
 - Structured errors use `CommerceServiceError` contracts; do not leak internal SQL details to clients.
@@ -66,23 +66,14 @@ No PC application root in this repository yet.
 ## 7. Deployment And Runtime Topology
 
 - Local development: `cargo test --workspace` in this repository.
-- Platform composition: `sdkwork-commerce` service host merges capability routers into the commerce HTTP surface.
-- Independent deployment of this capability server is supported via `sdkwork-catalog-api-server` for building-block topology; production gateway routing is owned by commerce/app topology specs.
+- Independent deployment via `sdkwork-catalog-standalone-gateway`; production gateway routing is owned by deployment/app topology specs.
 
 ## 8. Architecture Decision Index
 
-- [TECH-2026-06-24-commerce-capability-repo-split-alignment.md](../sdkwork-commerce/docs/architecture/tech/TECH-2026-06-24-commerce-capability-repo-split-alignment.md)
+- Commerce repository dissolution: `../sdkwork-specs/MIGRATION_SPEC.md` §8
 
 ## 9. Verification
 
 ```bash
 cargo test --workspace
-```
-
-From commerce T0 after boundary changes:
-
-```bash
-cd ../sdkwork-commerce
-cargo test --workspace
-node --test sdks/test/verify-commerce-migration-cleanup.test.mjs
 ```
