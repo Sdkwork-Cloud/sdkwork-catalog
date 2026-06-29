@@ -1,7 +1,7 @@
 import { appApiPath } from './paths';
 import type { HttpClient } from '../http/client';
 
-import type { CommerceApiResult, CommerceOperationCommand } from '../types';
+import type { CommerceOperationCommand, SdkWorkCommandResponse, SdkWorkResourceResponse } from '../types';
 
 
 export class CartItemsApi {
@@ -13,18 +13,18 @@ export class CartItemsApi {
 
 
 /** Cart items create. */
-  async create(body: CommerceOperationCommand): Promise<CommerceApiResult> {
-    return this.client.post<CommerceApiResult>(appApiPath(`/cart/items`), body, undefined, undefined, 'application/json');
+  async create(body: CommerceOperationCommand): Promise<SdkWorkResourceResponse> {
+    return this.client.post<SdkWorkResourceResponse>(appApiPath(`/cart/items`), body, undefined, undefined, 'application/json');
   }
 
 /** Cart items update. */
-  async update(cartItemId: string, body?: CommerceOperationCommand): Promise<CommerceApiResult> {
-    return this.client.patch<CommerceApiResult>(appApiPath(`/cart/items/${serializePathParameter(cartItemId, { name: 'cartItemId', style: 'simple', explode: false })}`), body, undefined, undefined, 'application/json');
+  async update(cartItemId: string, body?: CommerceOperationCommand): Promise<SdkWorkResourceResponse> {
+    return this.client.patch<SdkWorkResourceResponse>(appApiPath(`/cart/items/${serializePathParameter(cartItemId, { name: 'cartItemId', style: 'simple', explode: false })}`), body, undefined, undefined, 'application/json');
   }
 
 /** Cart items delete. */
-  async delete(cartItemId: string): Promise<CommerceApiResult> {
-    return this.client.delete<CommerceApiResult>(appApiPath(`/cart/items/${serializePathParameter(cartItemId, { name: 'cartItemId', style: 'simple', explode: false })}`));
+  async delete(cartItemId: string): Promise<SdkWorkCommandResponse> {
+    return this.client.delete<SdkWorkCommandResponse>(appApiPath(`/cart/items/${serializePathParameter(cartItemId, { name: 'cartItemId', style: 'simple', explode: false })}`));
   }
 }
 
@@ -37,8 +37,8 @@ export class CartCurrentApi {
 
 
 /** Cart current retrieve. */
-  async retrieve(): Promise<CommerceApiResult> {
-    return this.client.get<CommerceApiResult>(appApiPath(`/cart/current`));
+  async retrieve(): Promise<SdkWorkResourceResponse> {
+    return this.client.get<SdkWorkResourceResponse>(appApiPath(`/cart/current`));
   }
 }
 

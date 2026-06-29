@@ -6,20 +6,21 @@ use axum::extract::{Extension, Path, Query, State};
 use axum::response::{IntoResponse, Response};
 use axum::routing::{get, patch, post};
 use axum::{Json, Router};
-use sdkwork_commerce_merchandise_service::{
+use sdkwork_merchandise_service::{
     AddCartItemCommand, AddressListQuery, AttributeListQuery, CartRetrieveQuery, CategoryListQuery,
     CategoryRetrieveQuery, CreateAddressCommand, DeleteAddressCommand, ProductSkuRetrieveQuery,
     ProductSpuListQuery, ProductSpuRetrieveQuery, RemoveCartItemCommand, SetDefaultAddressCommand,
     SkuPriceRetrieveQuery, UpdateAddressCommand, UpdateCartItemCommand,
 };
-use sdkwork_commerce_merchandise_repository_sqlx::{
+use sdkwork_merchandise_repository_sqlx::{
     PostgresCommerceCatalogStore, SqliteCommerceCatalogStore,
 };
 use sdkwork_iam_context_service::IamAppContext;
 use sdkwork_routes_merchandise_app_api::{
     catalog_system_response, map_address, map_attribute, map_cart_item, map_category,
-    map_price_list_item, map_sku, map_spu, not_found_response, unauthorized_response,
-    validation_response, AddCartItemBody, AttributeQueryParams, CatalogApiResult, CatalogState,
+    map_price_list_item, map_sku, map_spu, not_found_response, success_accepted, success_list,
+    success_resource, unauthorized_response,
+    validation_response, AddCartItemBody, AttributeQueryParams, CatalogState,
     CategoryQueryParams, CommerceCatalogStore, CreateAddressBody, SpuListQueryParams,
     UpdateAddressBody, UpdateCartItemBody,
 };
@@ -97,10 +98,7 @@ async fn app_list_categories(
         Err(error) => return validation_response(error.message()),
     };
     match state.store.list_categories(query).await {
-        Ok(data) => Json(CatalogApiResult::success(
-            data.into_iter().map(map_category).collect::<Vec<_>>(),
-        ))
-        .into_response(),
+        Ok(data) => success_list(data.into_iter().map(map_category).collect()),
         Err(error) => catalog_system_response("category list is unavailable", error),
     }
 }
@@ -120,7 +118,7 @@ async fn app_retrieve_category(
     };
     match state.store.retrieve_category(query).await {
         Ok(Some(category)) => {
-            Json(CatalogApiResult::success(map_category(category))).into_response()
+            success_resource(map_category(category))
         }
         Ok(None) => not_found_response("category was not found"),
         Err(error) => catalog_system_response("category read model is unavailable", error),
@@ -148,10 +146,7 @@ async fn app_list_attributes(
         Err(error) => return validation_response(error.message()),
     };
     match state.store.list_attributes(query).await {
-        Ok(data) => Json(CatalogApiResult::success(
-            data.into_iter().map(map_attribute).collect::<Vec<_>>(),
-        ))
-        .into_response(),
+        Ok(data) => success_list(data.into_iter().map(map_attribute).collect()),
         Err(error) => catalog_system_response("attribute list is unavailable", error),
     }
 }
@@ -181,10 +176,7 @@ async fn app_list_products(
         Err(error) => return validation_response(error.message()),
     };
     match state.store.list_spus(query).await {
-        Ok(data) => Json(CatalogApiResult::success(
-            data.into_iter().map(map_spu).collect::<Vec<_>>(),
-        ))
-        .into_response(),
+        Ok(data) => success_list(data.into_iter().map(map_spu).collect()),
         Err(error) => catalog_system_response("product list is unavailable", error),
     }
 }
@@ -203,7 +195,7 @@ async fn app_retrieve_product(
         Err(error) => return validation_response(error.message()),
     };
     match state.store.retrieve_spu(query).await {
-        Ok(Some(data)) => Json(CatalogApiResult::success(map_spu(data))).into_response(),
+        Ok(Some(data)) => success_resource(map_spu(data)),
         Ok(None) => not_found_response("product was not found"),
         Err(error) => catalog_system_response("product read model is unavailable", error),
     }
@@ -223,7 +215,7 @@ async fn app_retrieve_sku(
         Err(error) => return validation_response(error.message()),
     };
     match state.store.retrieve_sku(query).await {
-        Ok(Some(data)) => Json(CatalogApiResult::success(map_sku(data))).into_response(),
+        Ok(Some(data)) => success_resource(map_sku(data)),
         Ok(None) => not_found_response("sku was not found"),
         Err(error) => catalog_system_response("sku read model is unavailable", error),
     }
@@ -243,12 +235,9 @@ async fn app_retrieve_sku_prices(
         Err(error) => return validation_response(error.message()),
     };
     match state.store.retrieve_sku_prices(query).await {
-        Ok(data) => Json(CatalogApiResult::success(
-            data.into_iter()
+        Ok(data) => success_list(data.into_iter()
                 .map(map_price_list_item)
-                .collect::<Vec<_>>(),
-        ))
-        .into_response(),
+                .collect()),
         Err(error) => catalog_system_response("sku prices are unavailable", error),
     }
 }
@@ -278,10 +267,7 @@ async fn app_list_spus(
         Err(error) => return validation_response(error.message()),
     };
     match state.store.list_spus(query).await {
-        Ok(data) => Json(CatalogApiResult::success(
-            data.into_iter().map(map_spu).collect::<Vec<_>>(),
-        ))
-        .into_response(),
+        Ok(data) => success_list(data.into_iter().map(map_spu).collect()),
         Err(error) => catalog_system_response("spu list is unavailable", error),
     }
 }
@@ -300,7 +286,7 @@ async fn app_retrieve_spu(
         Err(error) => return validation_response(error.message()),
     };
     match state.store.retrieve_spu(query).await {
-        Ok(Some(data)) => Json(CatalogApiResult::success(map_spu(data))).into_response(),
+        Ok(Some(data)) => success_resource(map_spu(data)),
         Ok(None) => not_found_response("spu was not found"),
         Err(error) => catalog_system_response("spu read model is unavailable", error),
     }
@@ -319,10 +305,7 @@ async fn app_list_cart(
         Err(error) => return validation_response(error.message()),
     };
     match state.store.list_cart_items(query).await {
-        Ok(data) => Json(CatalogApiResult::success(
-            data.into_iter().map(map_cart_item).collect::<Vec<_>>(),
-        ))
-        .into_response(),
+        Ok(data) => success_list(data.into_iter().map(map_cart_item).collect()),
         Err(error) => catalog_system_response("cart read model is unavailable", error),
     }
 }
@@ -347,7 +330,7 @@ async fn app_add_cart_item(
         Err(error) => return validation_response(error.message()),
     }
     match state.store.add_cart_item(command).await {
-        Ok(data) => Json(CatalogApiResult::success(map_cart_item(data))).into_response(),
+        Ok(data) => success_resource(map_cart_item(data)),
         Err(error) => catalog_system_response("failed to add cart item", error),
     }
 }
@@ -373,7 +356,7 @@ async fn app_update_cart_item(
         Err(error) => return validation_response(error.message()),
     }
     match state.store.update_cart_item(command).await {
-        Ok(data) => Json(CatalogApiResult::success(map_cart_item(data))).into_response(),
+        Ok(data) => success_resource(map_cart_item(data)),
         Err(error) => catalog_system_response("failed to update cart item", error),
     }
 }
@@ -397,7 +380,7 @@ async fn app_remove_cart_item(
         Err(error) => return validation_response(error.message()),
     }
     match state.store.remove_cart_item(command).await {
-        Ok(()) => Json(CatalogApiResult::success(())).into_response(),
+        Ok(()) => success_accepted(),
         Err(error) => catalog_system_response("failed to remove cart item", error),
     }
 }
@@ -415,10 +398,7 @@ async fn app_list_addresses(
         Err(error) => return validation_response(error.message()),
     };
     match state.store.list_addresses(query).await {
-        Ok(data) => Json(CatalogApiResult::success(
-            data.into_iter().map(map_address).collect::<Vec<_>>(),
-        ))
-        .into_response(),
+        Ok(data) => success_list(data.into_iter().map(map_address).collect()),
         Err(error) => catalog_system_response("address list is unavailable", error),
     }
 }
@@ -449,7 +429,7 @@ async fn app_create_address(
         Err(error) => return validation_response(error.message()),
     }
     match state.store.create_address(command).await {
-        Ok(data) => Json(CatalogApiResult::success(map_address(data))).into_response(),
+        Ok(data) => success_resource(map_address(data)),
         Err(error) => catalog_system_response("failed to create address", error),
     }
 }
@@ -479,7 +459,7 @@ async fn app_update_address(
         Err(error) => return validation_response(error.message()),
     }
     match state.store.update_address(command).await {
-        Ok(data) => Json(CatalogApiResult::success(map_address(data))).into_response(),
+        Ok(data) => success_resource(map_address(data)),
         Err(error) => catalog_system_response("failed to update address", error),
     }
 }
@@ -503,7 +483,7 @@ async fn app_delete_address(
         Err(error) => return validation_response(error.message()),
     }
     match state.store.delete_address(command).await {
-        Ok(()) => Json(CatalogApiResult::success(())).into_response(),
+        Ok(()) => success_accepted(),
         Err(error) => catalog_system_response("failed to delete address", error),
     }
 }
@@ -527,7 +507,7 @@ async fn app_set_default_address(
         Err(error) => return validation_response(error.message()),
     }
     match state.store.set_default_address(command).await {
-        Ok(data) => Json(CatalogApiResult::success(map_address(data))).into_response(),
+        Ok(data) => success_resource(map_address(data)),
         Err(error) => catalog_system_response("failed to set default address", error),
     }
 }

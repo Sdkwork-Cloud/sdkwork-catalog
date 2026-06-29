@@ -14,7 +14,7 @@ Specs: REQUIREMENTS_SPEC.md, DOCUMENTATION_SPEC.md
 
 Public and integrator-facing catalog browse surfaces should not share the same ownership boundary as merchant admin merchandise mutations.
 
-This repository is a **T1 commerce capability building block**. The `sdkwork-commerce` monolith has been dissolved; this repository is self-contained with its own domain logic, persistence, HTTP route builders, API server, and IAM middleware for the **catalog** capability.
+This repository is a **T1 commerce capability building block**. The `sdkwork-commerce (deleted)` monolith has been dissolved; this repository is self-contained with its own domain logic, persistence, HTTP route builders, API server, and IAM middleware for the **catalog** capability.
 
 ## 2. Target Users
 
@@ -35,7 +35,7 @@ Storefront buyers, integrators, and read-only catalog consumers.
 ## 4. Scope
 
 - App browse/open catalog routes: categories, products, SPUs, SKUs, cart, addresses.
-- Merchandise read stores consumed via `sdkwork-commerce-catalog-repository-sqlx` read adapter (`read_adapter.rs`).
+- Merchandise read stores consumed via `sdkwork-catalog-repository-sqlx` read adapter (`read_adapter.rs`).
 
 Primary API prefixes:
 

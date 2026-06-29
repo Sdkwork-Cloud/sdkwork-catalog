@@ -6,6 +6,8 @@
   "packageManager": "pnpm@10.30.3",
   "scripts": {
     "gateway:assembly:materialize": "node scripts/gateway/assembly-materialize.mjs",
-    "gateway:assembly:validate": "node scripts/gateway/assembly-validate.mjs"
+    "gateway:assembly:validate": "node scripts/gateway/assembly-validate.mjs",
+    "sdk:generate": "node sdks/sdkwork-catalog-app-sdk/bin/generate-sdk.mjs",
+    "openapi:align": "node ../sdkwork-specs/tools/align-openapi-response-envelope.mjs --file apis/app-api/catalog/catalog-app-api.openapi.json"
   }
 }

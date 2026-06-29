@@ -1582,22 +1582,6 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "94143f37725109f92c262ed2cf5e59bce7498c01bcc1502d7b9afe439a4e9f49"
 
 [[package]]
-name = "sdkwork-catalog-api-server"
-version = "0.1.0"
-dependencies = [
- "axum",
- "sdkwork-catalog-gateway-assembly",
- "sdkwork-catalog-service-host",
- "sdkwork-routes-catalog-app-api",
- "sdkwork-routes-catalog-backend-api",
- "sdkwork-web-bootstrap",
- "tokio",
- "tower-http 0.5.2",
- "tracing",
- "tracing-subscriber",
-]
-
-[[package]]
 name = "sdkwork-catalog-database-host"
 version = "0.1.0"
 dependencies = [
@@ -1620,6 +1604,14 @@ dependencies = [
 ]
 
 [[package]]
+name = "sdkwork-catalog-repository-sqlx"
+version = "0.1.0"
+dependencies = [
+ "sdkwork-contract-service",
+ "sdkwork-merchandise-repository-sqlx",
+]
+
+[[package]]
 name = "sdkwork-catalog-service-host"
 version = "0.1.0"
 dependencies = [
@@ -1629,43 +1621,24 @@ dependencies = [
 ]
 
 [[package]]
-name = "sdkwork-commerce-catalog-repository-sqlx"
+name = "sdkwork-catalog-standalone-gateway"
 version = "0.1.0"
 dependencies = [
- "sdkwork-commerce-contract-service",
- "sdkwork-commerce-merchandise-repository-sqlx",
+ "axum",
+ "sdkwork-catalog-gateway-assembly",
+ "sdkwork-catalog-service-host",
+ "sdkwork-routes-catalog-app-api",
+ "sdkwork-routes-catalog-backend-api",
+ "sdkwork-web-bootstrap",
+ "tokio",
+ "tower-http 0.5.2",
+ "tracing",
+ "tracing-subscriber",
 ]
 
 [[package]]
-name = "sdkwork-commerce-contract-service"
+name = "sdkwork-contract-service"
 version = "0.1.0"
-
-[[package]]
-name = "sdkwork-commerce-merchandise-repository-sqlx"
-version = "0.1.0"
-dependencies = [
- "async-trait",
- "chrono",
- "sdkwork-commerce-contract-service",
- "sdkwork-commerce-merchandise-service",
- "sdkwork-database-sqlx",
- "serde",
- "serde_json",
- "sqlx",
- "uuid",
-]
-
-[[package]]
-name = "sdkwork-commerce-merchandise-service"
-version = "0.1.0"
-dependencies = [
- "async-trait",
- "chrono",
- "sdkwork-commerce-contract-service",
- "serde",
- "serde_json",
- "uuid",
-]
 
 [[package]]
 name = "sdkwork-database-config"
@@ -1828,14 +1801,41 @@ dependencies = [
 ]
 
 [[package]]
+name = "sdkwork-merchandise-repository-sqlx"
+version = "0.1.0"
+dependencies = [
+ "async-trait",
+ "chrono",
+ "sdkwork-contract-service",
+ "sdkwork-database-sqlx",
+ "sdkwork-merchandise-service",
+ "serde",
+ "serde_json",
+ "sqlx",
+ "uuid",
+]
+
+[[package]]
+name = "sdkwork-merchandise-service"
+version = "0.1.0"
+dependencies = [
+ "async-trait",
+ "chrono",
+ "sdkwork-contract-service",
+ "serde",
+ "serde_json",
+ "uuid",
+]
+
+[[package]]
 name = "sdkwork-merchandise-service-host"
 version = "0.1.0"
 dependencies = [
- "sdkwork-commerce-merchandise-repository-sqlx",
- "sdkwork-commerce-merchandise-service",
  "sdkwork-database-spi",
  "sdkwork-database-sqlx",
  "sdkwork-merchandise-database-host",
+ "sdkwork-merchandise-repository-sqlx",
+ "sdkwork-merchandise-service",
 ]
 
 [[package]]
@@ -1844,12 +1844,12 @@ version = "0.1.0"
 dependencies = [
  "axum",
  "sdkwork-catalog-service-host",
- "sdkwork-commerce-contract-service",
- "sdkwork-commerce-merchandise-repository-sqlx",
- "sdkwork-commerce-merchandise-service",
+ "sdkwork-contract-service",
  "sdkwork-database-sqlx",
  "sdkwork-iam-context-service",
  "sdkwork-iam-web-adapter",
+ "sdkwork-merchandise-repository-sqlx",
+ "sdkwork-merchandise-service",
  "sdkwork-routes-merchandise-app-api",
  "sdkwork-web-axum",
  "sdkwork-web-bootstrap",
@@ -1865,8 +1865,8 @@ version = "0.1.0"
 dependencies = [
  "axum",
  "sdkwork-catalog-service-host",
- "sdkwork-commerce-merchandise-service",
  "sdkwork-iam-web-adapter",
+ "sdkwork-merchandise-service",
  "sdkwork-routes-merchandise-app-api",
  "sdkwork-web-axum",
  "sdkwork-web-bootstrap",
@@ -1880,12 +1880,13 @@ name = "sdkwork-routes-merchandise-app-api"
 version = "0.1.0"
 dependencies = [
  "axum",
- "sdkwork-commerce-contract-service",
- "sdkwork-commerce-merchandise-repository-sqlx",
- "sdkwork-commerce-merchandise-service",
+ "sdkwork-contract-service",
  "sdkwork-iam-context-service",
  "sdkwork-iam-web-adapter",
+ "sdkwork-merchandise-repository-sqlx",
+ "sdkwork-merchandise-service",
  "sdkwork-merchandise-service-host",
+ "sdkwork-utils-rust",
  "sdkwork-web-axum",
  "sdkwork-web-bootstrap",
  "sdkwork-web-core",
@@ -1899,11 +1900,14 @@ dependencies = [
 name = "sdkwork-utils-rust"
 version = "0.10.0"
 dependencies = [
+ "aes-gcm",
  "base64",
  "chrono",
+ "hkdf",
  "hmac",
  "rand 0.8.6",
  "regex",
+ "serde",
  "serde_json",
  "sha2",
  "urlencoding",
@@ -1960,7 +1964,9 @@ dependencies = [
  "getrandom 0.2.17",
  "hmac",
  "http",
+ "percent-encoding",
  "rsa",
+ "sdkwork-utils-rust",
  "sdkwork-web-contract",
  "serde",
  "serde_json",

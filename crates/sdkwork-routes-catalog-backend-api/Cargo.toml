@@ -13,7 +13,7 @@ axum = { workspace = true }
 serde = { workspace = true }
 serde_json = { workspace = true }
 sdkwork_routes_merchandise_app_api.workspace = true
-sdkwork_commerce_merchandise_service.workspace = true
+sdkwork_merchandise_service.workspace = true
 sdkwork_catalog_service_host.workspace = true
 sdkwork-web-core.workspace = true
 sdkwork-web-axum.workspace = true
