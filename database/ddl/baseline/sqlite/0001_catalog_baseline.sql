@@ -1,0 +1,3 @@
+-- sdkwork:baseline
+-- module: catalog
+-- reference-only capability contract; commerce platform bootstrap owns shared commerce_ tables
