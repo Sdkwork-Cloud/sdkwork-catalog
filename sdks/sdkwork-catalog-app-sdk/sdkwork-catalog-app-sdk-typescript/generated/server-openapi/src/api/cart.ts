@@ -1,7 +1,7 @@
 import { appApiPath } from './paths';
 import type { HttpClient } from '../http/client';
 
-import type { CommerceOperationCommand, SdkWorkCommandResponse, SdkWorkResourceResponse } from '../types';
+import type { CommerceOperationCommand, SdkWorkCommandData } from '../types';
 
 
 export class CartItemsApi {
@@ -13,18 +13,18 @@ export class CartItemsApi {
 
 
 /** Cart items create. */
-  async create(body: CommerceOperationCommand): Promise<SdkWorkResourceResponse> {
-    return this.client.post<SdkWorkResourceResponse>(appApiPath(`/cart/items`), body, undefined, undefined, 'application/json');
+  async create(body: CommerceOperationCommand): Promise<Record<string, unknown>> {
+    return this.client.post<Record<string, unknown>>(appApiPath(`/cart/items`), body, undefined, undefined, 'application/json');
   }
 
 /** Cart items update. */
-  async update(cartItemId: string, body?: CommerceOperationCommand): Promise<SdkWorkResourceResponse> {
-    return this.client.patch<SdkWorkResourceResponse>(appApiPath(`/cart/items/${serializePathParameter(cartItemId, { name: 'cartItemId', style: 'simple', explode: false })}`), body, undefined, undefined, 'application/json');
+  async update(cartItemId: string, body?: CommerceOperationCommand): Promise<Record<string, unknown>> {
+    return this.client.patch<Record<string, unknown>>(appApiPath(`/cart/items/${serializePathParameter(cartItemId, { name: 'cartItemId', style: 'simple', explode: false })}`), body, undefined, undefined, 'application/json');
   }
 
 /** Cart items delete. */
-  async delete(cartItemId: string): Promise<SdkWorkCommandResponse> {
-    return this.client.delete<SdkWorkCommandResponse>(appApiPath(`/cart/items/${serializePathParameter(cartItemId, { name: 'cartItemId', style: 'simple', explode: false })}`));
+  async delete(cartItemId: string): Promise<SdkWorkCommandData> {
+    return this.client.delete<SdkWorkCommandData>(appApiPath(`/cart/items/${serializePathParameter(cartItemId, { name: 'cartItemId', style: 'simple', explode: false })}`));
   }
 }
 
@@ -37,8 +37,8 @@ export class CartCurrentApi {
 
 
 /** Cart current retrieve. */
-  async retrieve(): Promise<SdkWorkResourceResponse> {
-    return this.client.get<SdkWorkResourceResponse>(appApiPath(`/cart/current`));
+  async retrieve(): Promise<Record<string, unknown>> {
+    return this.client.get<Record<string, unknown>>(appApiPath(`/cart/current`));
   }
 }
 

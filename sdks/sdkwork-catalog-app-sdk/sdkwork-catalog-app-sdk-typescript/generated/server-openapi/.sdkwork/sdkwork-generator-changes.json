@@ -9,26 +9,14 @@
     "protocol": "http",
     "packageName": "@sdkwork/catalog-app-sdk"
   },
-  "changeFingerprint": "87a0dd5b9e9ee5df59282dbf1027e42993fc681fecc56a17ce5b7790e7716de7",
+  "changeFingerprint": "a53575c85238a4eba61ca38886e488524d970b7c37a2dbc8409509a60e6cc250",
   "changes": {
-    "createdGeneratedFiles": [
-      "src/types/page-info.ts",
-      "src/types/sdk-work-api-response.ts",
-      "src/types/sdk-work-command-data.ts",
-      "src/types/sdk-work-command-response.ts",
-      "src/types/sdk-work-list-response.ts",
-      "src/types/sdk-work-page-data.ts",
-      "src/types/sdk-work-platform-error-code.ts",
-      "src/types/sdk-work-resource-data.ts",
-      "src/types/sdk-work-resource-response.ts"
-    ],
+    "createdGeneratedFiles": [],
     "updatedGeneratedFiles": [
       "README.md",
       "src/api/cart.ts",
       "src/api/catalog.ts",
-      "src/types/field-error.ts",
-      "src/types/index.ts",
-      "src/types/problem-detail.ts"
+      "src/http/client.ts"
     ],
     "unchangedGeneratedFiles": [
       "bin/publish-core.mjs",
@@ -44,7 +32,6 @@
       "src/api/index.ts",
       "src/api/paths.ts",
       "src/auth/index.ts",
-      "src/http/client.ts",
       "src/http/index.ts",
       "src/index.ts",
       "src/sdk.ts",
@@ -58,6 +45,18 @@
       "src/types/create-after-sales-request.ts",
       "src/types/create-after-sales-return-shipment-request.ts",
       "src/types/create-shop-service-area-request.ts",
+      "src/types/field-error.ts",
+      "src/types/index.ts",
+      "src/types/page-info.ts",
+      "src/types/problem-detail.ts",
+      "src/types/sdk-work-api-response.ts",
+      "src/types/sdk-work-command-data.ts",
+      "src/types/sdk-work-command-response.ts",
+      "src/types/sdk-work-list-response.ts",
+      "src/types/sdk-work-page-data.ts",
+      "src/types/sdk-work-platform-error-code.ts",
+      "src/types/sdk-work-resource-data.ts",
+      "src/types/sdk-work-resource-response.ts",
       "src/types/shop-application.ts",
       "src/types/shop-brand-authorization.ts",
       "src/types/shop-business-hour.ts",
@@ -96,46 +95,7 @@
       "src/types/upsert-shop-shipping-template-request.ts",
       "tsconfig.json"
     ],
-    "deletedGeneratedFiles": [
-      "src/types/after-sales-event-list-response.ts",
-      "src/types/after-sales-request-list-response.ts",
-      "src/types/after-sales-request-response.ts",
-      "src/types/after-sales-return-shipment-list-response.ts",
-      "src/types/after-sales-return-shipment-response.ts",
-      "src/types/commerce-api-result.ts",
-      "src/types/current-shop-response.ts",
-      "src/types/shop-application-list-response.ts",
-      "src/types/shop-application-response.ts",
-      "src/types/shop-brand-authorization-list-response.ts",
-      "src/types/shop-brand-authorization-response.ts",
-      "src/types/shop-business-hour-response.ts",
-      "src/types/shop-category-binding-list-response.ts",
-      "src/types/shop-category-binding-response.ts",
-      "src/types/shop-channel-list-response.ts",
-      "src/types/shop-channel-response.ts",
-      "src/types/shop-customer-service-list-response.ts",
-      "src/types/shop-customer-service-response.ts",
-      "src/types/shop-dashboard-response.ts",
-      "src/types/shop-deposit-account-response.ts",
-      "src/types/shop-detail-response.ts",
-      "src/types/shop-fulfillment-profile-response.ts",
-      "src/types/shop-list-response.ts",
-      "src/types/shop-policy-list-response.ts",
-      "src/types/shop-policy-response.ts",
-      "src/types/shop-qualification-list-response.ts",
-      "src/types/shop-qualification-response.ts",
-      "src/types/shop-readiness-response.ts",
-      "src/types/shop-return-address-list-response.ts",
-      "src/types/shop-return-address-response.ts",
-      "src/types/shop-risk-signal-list-response.ts",
-      "src/types/shop-service-area-list-response.ts",
-      "src/types/shop-service-area-response.ts",
-      "src/types/shop-settlement-profile-response.ts",
-      "src/types/shop-shipping-template-list-response.ts",
-      "src/types/shop-shipping-template-response.ts",
-      "src/types/shop-status-event-list-response.ts",
-      "src/types/shop-verification-list-response.ts"
-    ],
+    "deletedGeneratedFiles": [],
     "scaffoldedFiles": [],
     "preservedScaffoldFiles": [
       "custom/build-runtime.mjs",
@@ -147,7 +107,7 @@
     "schemaVersion": 1,
     "areas": [
       "api-surface",
-      "models",
+      "runtime",
       "documentation"
     ],
     "details": [
@@ -155,62 +115,14 @@
         "area": "api-surface",
         "paths": [
           "src/api/cart.ts",
-          "src/api/catalog.ts"
+          "src/api/catalog.ts",
+          "src/http/client.ts"
         ]
       },
       {
-        "area": "models",
+        "area": "runtime",
         "paths": [
-          "src/types/after-sales-event-list-response.ts",
-          "src/types/after-sales-request-list-response.ts",
-          "src/types/after-sales-request-response.ts",
-          "src/types/after-sales-return-shipment-list-response.ts",
-          "src/types/after-sales-return-shipment-response.ts",
-          "src/types/commerce-api-result.ts",
-          "src/types/current-shop-response.ts",
-          "src/types/field-error.ts",
-          "src/types/index.ts",
-          "src/types/page-info.ts",
-          "src/types/problem-detail.ts",
-          "src/types/sdk-work-api-response.ts",
-          "src/types/sdk-work-command-data.ts",
-          "src/types/sdk-work-command-response.ts",
-          "src/types/sdk-work-list-response.ts",
-          "src/types/sdk-work-page-data.ts",
-          "src/types/sdk-work-platform-error-code.ts",
-          "src/types/sdk-work-resource-data.ts",
-          "src/types/sdk-work-resource-response.ts",
-          "src/types/shop-application-list-response.ts",
-          "src/types/shop-application-response.ts",
-          "src/types/shop-brand-authorization-list-response.ts",
-          "src/types/shop-brand-authorization-response.ts",
-          "src/types/shop-business-hour-response.ts",
-          "src/types/shop-category-binding-list-response.ts",
-          "src/types/shop-category-binding-response.ts",
-          "src/types/shop-channel-list-response.ts",
-          "src/types/shop-channel-response.ts",
-          "src/types/shop-customer-service-list-response.ts",
-          "src/types/shop-customer-service-response.ts",
-          "src/types/shop-dashboard-response.ts",
-          "src/types/shop-deposit-account-response.ts",
-          "src/types/shop-detail-response.ts",
-          "src/types/shop-fulfillment-profile-response.ts",
-          "src/types/shop-list-response.ts",
-          "src/types/shop-policy-list-response.ts",
-          "src/types/shop-policy-response.ts",
-          "src/types/shop-qualification-list-response.ts",
-          "src/types/shop-qualification-response.ts",
-          "src/types/shop-readiness-response.ts",
-          "src/types/shop-return-address-list-response.ts",
-          "src/types/shop-return-address-response.ts",
-          "src/types/shop-risk-signal-list-response.ts",
-          "src/types/shop-service-area-list-response.ts",
-          "src/types/shop-service-area-response.ts",
-          "src/types/shop-settlement-profile-response.ts",
-          "src/types/shop-shipping-template-list-response.ts",
-          "src/types/shop-shipping-template-response.ts",
-          "src/types/shop-status-event-list-response.ts",
-          "src/types/shop-verification-list-response.ts"
+          "src/http/client.ts"
         ]
       },
       {
@@ -221,18 +133,18 @@
       }
     ],
     "requiresVerification": true,
-    "summary": "Detected impact areas: api-surface, models, documentation. Verification is required."
+    "summary": "Detected impact areas: api-surface, runtime, documentation. Verification is required."
   },
   "verificationPlan": {
     "shouldRun": true,
     "runPhase": "now",
-    "summary": "Detected impact areas: api-surface, models, documentation. Verification is required. Run the required verification commands now against the generated SDK output.",
+    "summary": "Detected impact areas: api-surface, runtime, documentation. Verification is required. Run the required verification commands now against the generated SDK output.",
     "steps": [
       {
         "id": "check",
         "title": "Unified package check",
         "required": true,
-        "rationale": "Validate the generated package with the unified publish helper. Triggered by: api-surface, models, documentation.",
+        "rationale": "Validate the generated package with the unified publish helper. Triggered by: api-surface, runtime, documentation.",
         "workingDirectory": "E:\\sdkwork-space\\sdkwork-catalog\\sdks\\sdkwork-catalog-app-sdk\\sdkwork-catalog-app-sdk-typescript\\generated\\server-openapi",
         "command": "node",
         "args": [
@@ -250,7 +162,7 @@
         "id": "build",
         "title": "Unified package build",
         "required": true,
-        "rationale": "Run the full package build because this language uses a lighter check path than the final build. Triggered by: api-surface, models, documentation.",
+        "rationale": "Run the full package build because this language uses a lighter check path than the final build. Triggered by: api-surface, runtime, documentation.",
         "workingDirectory": "E:\\sdkwork-space\\sdkwork-catalog\\sdks\\sdkwork-catalog-app-sdk\\sdkwork-catalog-app-sdk-typescript\\generated\\server-openapi",
         "command": "node",
         "args": [
@@ -268,14 +180,12 @@
   },
   "executionDecision": {
     "schemaVersion": 1,
-    "riskLevel": "high",
+    "riskLevel": "medium",
     "nextAction": "verify",
     "requiresManualReview": false,
     "applyRequiresExpectedFingerprint": false,
     "summary": "Changes have been applied. Run the required verification plan now.",
     "reasons": [
-      "deleted-generated-files",
-      "manual-review-required",
       "verification-required"
     ]
   },

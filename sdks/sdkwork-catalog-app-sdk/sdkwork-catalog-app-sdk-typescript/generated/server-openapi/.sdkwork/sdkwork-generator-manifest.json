@@ -44,7 +44,7 @@
     },
     {
       "path": "README.md",
-      "sha256": "9f4f526dc9a7026e6b328f2a9fccc000fd0a60b7a11c030c18a59fe7fc68563c"
+      "sha256": "befbdcce735ac93b481d15768cc21dc03648d667cc40dc8e35f2007aa64426a8"
     },
     {
       "path": "sdkwork-sdk.json",
@@ -56,11 +56,11 @@
     },
     {
       "path": "src/api/cart.ts",
-      "sha256": "5cd20b374a44dd1235ff5b0cc6cf4662dbfc13d484447628af25540ab99c0350"
+      "sha256": "fb13bb463326ebe08c81749f33a7901b4e786325e28ae4f618edd47d1803b228"
     },
     {
       "path": "src/api/catalog.ts",
-      "sha256": "24ed595f76629fbde6acbf3272eb32ad7cac5a50bdb12bfc2fca3bb498f0b2b8"
+      "sha256": "26c840e80ce74e4b4a43c5d97c18024b239d9a51c960b3eb122673cd0d48bbb2"
     },
     {
       "path": "src/api/index.ts",
@@ -76,7 +76,7 @@
     },
     {
       "path": "src/http/client.ts",
-      "sha256": "7c5521163579261418c56e8126b0389dd78be9e0931e5e6064749c7cc9df0edc"
+      "sha256": "902ecbf9b15072c147ac9716f22209cd50b770e517b55d1ce1583671ab4d2c3e"
     },
     {
       "path": "src/http/index.ts",

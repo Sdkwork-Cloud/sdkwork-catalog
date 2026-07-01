@@ -1,4 +1,5 @@
 # sdkwork-catalog
+repository-kind: application
 
 SDKWork commerce **catalog** capability building-block repository (domain `commerce`).
 
