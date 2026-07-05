@@ -4,7 +4,9 @@
   "version": "0.1.0",
   "language": "typescript",
   "sdkType": "app",
-  "packageName": "@sdkwork/catalog-app-sdk",
+  "packageName": "sdkwork-catalog-app-sdk-generated-typescript",
+  "transportPackageName": "sdkwork-catalog-app-sdk-generated-typescript",
+  "consumerPackageName": "@sdkwork/catalog-app-sdk",
   "generator": "@sdkwork/sdk-generator",
   "capabilities": {
     "supportsGeneratedTests": true,

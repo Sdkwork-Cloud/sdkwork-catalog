@@ -40,15 +40,15 @@
     },
     {
       "path": "package.json",
-      "sha256": "1a97afbe1b0eef008b9aa54a5bbb983ffee1cabbd2848d7fe19702db96b8e655"
+      "sha256": "fc3e4f676c0e911f4e90c851e11b9c6bce89926628af2873edb252bd9ffe6e8e"
     },
     {
       "path": "README.md",
-      "sha256": "befbdcce735ac93b481d15768cc21dc03648d667cc40dc8e35f2007aa64426a8"
+      "sha256": "9f4f526dc9a7026e6b328f2a9fccc000fd0a60b7a11c030c18a59fe7fc68563c"
     },
     {
       "path": "sdkwork-sdk.json",
-      "sha256": "f556df7e12c45885e45b3863a49dfc16d3bdf3596bb646fc312ed16541564561"
+      "sha256": "c00afcba13b950e7dfef9ee1191bb32f9efba43882ef1d12c00163ecf719ab88"
     },
     {
       "path": "src/api/base.ts",
