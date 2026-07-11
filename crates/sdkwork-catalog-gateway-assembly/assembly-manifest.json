@@ -4,7 +4,7 @@
   "applicationCode": "catalog",
   "packageName": "sdkwork-catalog-gateway-assembly",
   "crateDir": "crates/sdkwork-catalog-gateway-assembly",
-  "generatedAt": "2026-06-25T13:08:05.511Z",
+  "generatedAt": "2026-07-08T01:33:36.567Z",
   "routeCrates": [
     {
       "packageName": "sdkwork-routes-catalog-app-api",
