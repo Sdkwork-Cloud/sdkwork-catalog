@@ -1291,7 +1291,7 @@
         "operationId": "cart.items.create",
         "parameters": [],
         "responses": {
-          "200": {
+          "201": {
             "description": "Success",
             "content": {
               "application/json": {
@@ -1517,15 +1517,8 @@
           }
         ],
         "responses": {
-          "200": {
-            "description": "Success",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/SdkWorkCommandResponse"
-                }
-              }
-            }
+          "204": {
+            "description": "Success"
           },
           "400": {
             "description": "Bad request",
