@@ -34,7 +34,7 @@ Migration status: **complete**.
 | Domain commands/queries | `scaffold` | Business validation and ports |
 | SQL repositories | `sdkwork-catalog-repository-sqlx` | Tenant-scoped persistence |
 | HTTP route builders | sdkwork-routes-catalog-app-api | `build_*_router` exports without IAM |
-| IAM / gateway composition | `sdkwork-catalog-standalone-gateway` | IAM middleware at T1 standalone-gateway |
+| IAM / gateway composition | `sdkwork-api-catalog-standalone-gateway` | IAM middleware at T1 standalone-gateway |
 | OpenAPI / SDK authority | `sdkwork-catalog/sdks/` | Per-T1 SDK families |
 
 ## 4. Directory And Package Layout
@@ -45,7 +45,7 @@ Standard 7-crate capability workspace:
 - `crates/sdkwork-routes-catalog-app-api/`
 - `crates/sdkwork-catalog-database-host/`
 - `crates/sdkwork-catalog-service-host/`
-- `crates/sdkwork-catalog-standalone-gateway/`
+- `crates/sdkwork-api-catalog-standalone-gateway/`
 
 No PC application root in this repository yet.
 
@@ -66,7 +66,7 @@ No PC application root in this repository yet.
 ## 7. Deployment And Runtime Topology
 
 - Local development: `cargo test --workspace` in this repository.
-- Independent deployment via `sdkwork-catalog-standalone-gateway`; production gateway routing is owned by deployment/app topology specs.
+- Independent deployment via `sdkwork-api-catalog-standalone-gateway`; production gateway routing is owned by deployment/app topology specs.
 
 ## 8. Architecture Decision Index
 

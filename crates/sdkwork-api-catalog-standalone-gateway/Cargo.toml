@@ -1,16 +1,16 @@
 [package]
-name = "sdkwork-catalog-standalone-gateway"
+name = "sdkwork-api-catalog-standalone-gateway"
 version.workspace = true
 edition.workspace = true
 license.workspace = true
 publish.workspace = true
 
 [[bin]]
-name = "sdkwork-catalog-standalone-gateway"
+name = "sdkwork-api-catalog-standalone-gateway"
 path = "src/main.rs"
 
 [dependencies]
-sdkwork_catalog_gateway_assembly = { package = "sdkwork-catalog-gateway-assembly", path = "../sdkwork-catalog-gateway-assembly" }
+sdkwork_api_catalog_assembly = { package = "sdkwork-api-catalog-assembly", path = "../sdkwork-api-catalog-assembly" }
 axum = { workspace = true }
 tokio = { workspace = true }
 tower-http = { workspace = true }

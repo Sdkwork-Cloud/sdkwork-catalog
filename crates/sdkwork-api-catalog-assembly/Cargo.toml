@@ -1,0 +1,17 @@
+[package]
+name = "sdkwork-api-catalog-assembly"
+edition.workspace = true
+license.workspace = true
+version.workspace = true
+description = "Generated API assembly for sdkwork-catalog application HTTP plane."
+
+[lib]
+name = "sdkwork_api_catalog_assembly"
+path = "src/lib.rs"
+
+[dependencies]
+axum.workspace = true
+tokio.workspace = true
+sdkwork_catalog_service_host = { package = "sdkwork-catalog-service-host", path = "../sdkwork-catalog-service-host" }
+sdkwork-routes-catalog-app-api = { path = "../sdkwork-routes-catalog-app-api" }
+sdkwork-routes-catalog-backend-api = { path = "../sdkwork-routes-catalog-backend-api" }
