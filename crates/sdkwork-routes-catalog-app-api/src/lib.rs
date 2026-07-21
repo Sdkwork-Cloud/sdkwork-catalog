@@ -8,8 +8,9 @@ pub use app_catalog_router::{
     build_app_catalog_router,
 };
 pub use routes::{
-    build_catalog_app_router_with_framework_postgres, build_catalog_app_router_with_framework_sqlite,
-    build_catalog_app_router_with_postgres_pool, build_catalog_app_router_with_sqlite_pool,
+    build_catalog_app_router_with_framework_postgres,
+    build_catalog_app_router_with_framework_sqlite, build_catalog_app_router_with_postgres_pool,
+    build_catalog_app_router_with_sqlite_pool,
 };
 pub use web_bootstrap::wrap_router_with_web_framework_from_env;
 

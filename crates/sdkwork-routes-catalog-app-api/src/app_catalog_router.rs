@@ -3,26 +3,25 @@
 use std::sync::Arc;
 
 use axum::extract::{Extension, Path, Query, State};
-use axum::response::{IntoResponse, Response};
+use axum::response::Response;
 use axum::routing::{get, patch, post};
 use axum::{Json, Router};
+use sdkwork_iam_context_service::IamAppContext;
+use sdkwork_merchandise_repository_sqlx::{
+    PostgresCommerceCatalogStore, SqliteCommerceCatalogStore,
+};
 use sdkwork_merchandise_service::{
     AddCartItemCommand, AddressListQuery, AttributeListQuery, CartRetrieveQuery, CategoryListQuery,
     CategoryRetrieveQuery, CreateAddressCommand, DeleteAddressCommand, ProductSkuRetrieveQuery,
     ProductSpuListQuery, ProductSpuRetrieveQuery, RemoveCartItemCommand, SetDefaultAddressCommand,
     SkuPriceRetrieveQuery, UpdateAddressCommand, UpdateCartItemCommand,
 };
-use sdkwork_merchandise_repository_sqlx::{
-    PostgresCommerceCatalogStore, SqliteCommerceCatalogStore,
-};
-use sdkwork_iam_context_service::IamAppContext;
 use sdkwork_routes_merchandise_app_api::{
     catalog_system_response, map_address, map_attribute, map_cart_item, map_category,
     map_price_list_item, map_sku, map_spu, not_found_response, success_accepted, success_list,
-    success_resource, unauthorized_response,
-    validation_response, AddCartItemBody, AttributeQueryParams, CatalogState,
-    CategoryQueryParams, CommerceCatalogStore, CreateAddressBody, SpuListQueryParams,
-    UpdateAddressBody, UpdateCartItemBody,
+    success_resource, unauthorized_response, validation_response, AddCartItemBody,
+    AttributeQueryParams, CatalogState, CategoryQueryParams, CommerceCatalogStore,
+    CreateAddressBody, SpuListQueryParams, UpdateAddressBody, UpdateCartItemBody,
 };
 use sqlx::{PgPool, SqlitePool};
 
@@ -38,43 +37,43 @@ pub fn app_catalog_router_with_postgres_pool(pool: PgPool) -> Router {
 
 pub fn build_app_catalog_router(store: Arc<dyn CommerceCatalogStore>) -> Router {
     Router::new()
-            .route("/app/v3/api/catalog/categories", get(app_list_categories))
-            .route(
-                "/app/v3/api/catalog/categories/{categoryId}",
-                get(app_retrieve_category),
-            )
-            .route("/app/v3/api/catalog/attributes", get(app_list_attributes))
-            .route("/app/v3/api/catalog/products", get(app_list_products))
-            .route(
-                "/app/v3/api/catalog/products/{productId}",
-                get(app_retrieve_product),
-            )
-            .route("/app/v3/api/catalog/skus/{skuId}", get(app_retrieve_sku))
-            .route(
-                "/app/v3/api/catalog/skus/{skuId}/prices",
-                get(app_retrieve_sku_prices),
-            )
-            .route("/app/v3/api/catalog/spus", get(app_list_spus))
-            .route("/app/v3/api/catalog/spus/{spuId}", get(app_retrieve_spu))
-            .route("/app/v3/api/cart/current", get(app_list_cart))
-            .route("/app/v3/api/cart/items", post(app_add_cart_item))
-            .route(
-                "/app/v3/api/cart/items/{cartItemId}",
-                patch(app_update_cart_item).delete(app_remove_cart_item),
-            )
-            .route(
-                "/app/v3/api/addresses",
-                get(app_list_addresses).post(app_create_address),
-            )
-            .route(
-                "/app/v3/api/addresses/{addressId}",
-                patch(app_update_address).delete(app_delete_address),
-            )
-            .route(
-                "/app/v3/api/addresses/{addressId}/default_selection",
-                post(app_set_default_address),
-            )
-            .with_state(CatalogState { store })
+        .route("/app/v3/api/catalog/categories", get(app_list_categories))
+        .route(
+            "/app/v3/api/catalog/categories/{categoryId}",
+            get(app_retrieve_category),
+        )
+        .route("/app/v3/api/catalog/attributes", get(app_list_attributes))
+        .route("/app/v3/api/catalog/products", get(app_list_products))
+        .route(
+            "/app/v3/api/catalog/products/{productId}",
+            get(app_retrieve_product),
+        )
+        .route("/app/v3/api/catalog/skus/{skuId}", get(app_retrieve_sku))
+        .route(
+            "/app/v3/api/catalog/skus/{skuId}/prices",
+            get(app_retrieve_sku_prices),
+        )
+        .route("/app/v3/api/catalog/spus", get(app_list_spus))
+        .route("/app/v3/api/catalog/spus/{spuId}", get(app_retrieve_spu))
+        .route("/app/v3/api/cart/current", get(app_list_cart))
+        .route("/app/v3/api/cart/items", post(app_add_cart_item))
+        .route(
+            "/app/v3/api/cart/items/{cartItemId}",
+            patch(app_update_cart_item).delete(app_remove_cart_item),
+        )
+        .route(
+            "/app/v3/api/addresses",
+            get(app_list_addresses).post(app_create_address),
+        )
+        .route(
+            "/app/v3/api/addresses/{addressId}",
+            patch(app_update_address).delete(app_delete_address),
+        )
+        .route(
+            "/app/v3/api/addresses/{addressId}/default_selection",
+            post(app_set_default_address),
+        )
+        .with_state(CatalogState { store })
 }
 async fn app_list_categories(
     State(state): State<CatalogState>,
@@ -117,9 +116,7 @@ async fn app_retrieve_category(
         Err(error) => return validation_response(error.message().to_string()),
     };
     match state.store.retrieve_category(query).await {
-        Ok(Some(category)) => {
-            success_resource(map_category(category))
-        }
+        Ok(Some(category)) => success_resource(map_category(category)),
         Ok(None) => not_found_response("category was not found"),
         Err(error) => catalog_system_response("category read model is unavailable", error),
     }
@@ -235,9 +232,7 @@ async fn app_retrieve_sku_prices(
         Err(error) => return validation_response(error.message()),
     };
     match state.store.retrieve_sku_prices(query).await {
-        Ok(data) => success_list(data.into_iter()
-                .map(map_price_list_item)
-                .collect()),
+        Ok(data) => success_list(data.into_iter().map(map_price_list_item).collect()),
         Err(error) => catalog_system_response("sku prices are unavailable", error),
     }
 }
