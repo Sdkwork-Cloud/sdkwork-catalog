@@ -1,11 +1,9 @@
 ﻿[workspace]
 resolver = "2"
 members = [
-    "crates/sdkwork-api-catalog-assembly",
-    "crates/sdkwork-api-catalog-assembly",
+  "crates/sdkwork-api-catalog-assembly",
   "crates/sdkwork-catalog-repository-sqlx",
   "crates/sdkwork-routes-catalog-app-api",
-  "crates/sdkwork-routes-catalog-backend-api",
   "crates/sdkwork-catalog-database-host",
   "crates/sdkwork-catalog-service-host",
   "crates/sdkwork-api-catalog-standalone-gateway",
@@ -45,9 +43,9 @@ sdkwork-database-spi = { path = "../sdkwork-database/crates/sdkwork-database-spi
 sdkwork-database-sqlx = { path = "../sdkwork-database/crates/sdkwork-database-sqlx" }
 sdkwork_merchandise_service = { path = "../sdkwork-merchandise/crates/sdkwork-merchandise-service", package = "sdkwork-merchandise-service" }
 sdkwork_merchandise_repository_sqlx = { path = "../sdkwork-merchandise/crates/sdkwork-merchandise-repository-sqlx", package = "sdkwork-merchandise-repository-sqlx" }
-sdkwork_routes_merchandise_app_api = { path = "../sdkwork-merchandise/crates/sdkwork-routes-merchandise-app-api", package = "sdkwork-routes-merchandise-app-api" }
+sdkwork_merchandise_web_support = { path = "../sdkwork-merchandise/crates/sdkwork-merchandise-web-support", package = "sdkwork-merchandise-web-support" }
 sdkwork_catalog_repository_sqlx = { path = "crates/sdkwork-catalog-repository-sqlx", package = "sdkwork-catalog-repository-sqlx" }
 sdkwork_routes_catalog_app_api = { path = "crates/sdkwork-routes-catalog-app-api", package = "sdkwork-routes-catalog-app-api" }
-sdkwork_routes_catalog_backend_api = { path = "crates/sdkwork-routes-catalog-backend-api", package = "sdkwork-routes-catalog-backend-api" }
 sdkwork_catalog_database_host = { path = "crates/sdkwork-catalog-database-host", package = "sdkwork-catalog-database-host" }
 sdkwork_catalog_service_host = { path = "crates/sdkwork-catalog-service-host", package = "sdkwork-catalog-service-host" }
+sdkwork_api_catalog_assembly = { path = "crates/sdkwork-api-catalog-assembly", package = "sdkwork-api-catalog-assembly" }

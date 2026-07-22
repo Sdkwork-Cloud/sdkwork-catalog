@@ -10,7 +10,7 @@ name = "sdkwork-api-catalog-standalone-gateway"
 path = "src/main.rs"
 
 [dependencies]
-sdkwork_api_catalog_assembly = { package = "sdkwork-api-catalog-assembly", path = "../sdkwork-api-catalog-assembly" }
+sdkwork_api_catalog_assembly.workspace = true
 axum = { workspace = true }
 tokio = { workspace = true }
 tower-http = { workspace = true }
@@ -18,5 +18,4 @@ tracing = { workspace = true }
 tracing-subscriber = { workspace = true }
 sdkwork-web-bootstrap.workspace = true
 sdkwork_routes_catalog_app_api.workspace = true
-sdkwork_routes_catalog_backend_api.workspace = true
 sdkwork_catalog_service_host.workspace = true

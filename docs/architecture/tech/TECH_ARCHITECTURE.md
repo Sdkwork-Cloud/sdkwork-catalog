@@ -1,79 +1,77 @@
-# Catalog (browse/open) Technical Architecture
+# Catalog Technical Architecture
 
 Status: active
 Owner: SDKWork maintainers
-Updated: 2026-06-24
-Specs: ARCHITECTURE_DECISION_SPEC.md, RUST_CODE_SPEC.md, API_SPEC.md, WEB_FRAMEWORK_SPEC.md, DATABASE_FRAMEWORK_SPEC.md
+Updated: 2026-07-22
+Specs: ARCHITECTURE_DECISION_SPEC.md, RUST_CODE_SPEC.md, API_SPEC.md, PAGINATION_SPEC.md,
+WEB_FRAMEWORK_SPEC.md, SDK_SPEC.md
 
-## Document Map
-
-- Commerce repository dissolution: `../sdkwork-specs/MIGRATION_SPEC.md` §8
-
-## 1. Architecture Overview
-
-`sdkwork-catalog` is a **T1 capability repository** in the commerce domain. It owns domain services, SQL repositories, HTTP route builders, and a standalone gateway with IAM middleware. The `sdkwork-commerce (deleted)` monolith has been dissolved; each T1 capability repository is self-contained.
+## Architecture
 
 ```text
-T1 catalog crate  →  build_*_router()     (no IAM)
-T1 standalone-gateway     →  with_request_identity / with_backend_request_identity
+sdkwork-routes-catalog-app-api
+  -> sdkwork-merchandise-web-support::CommerceCatalogStore
+  -> PostgresCommerceCatalogStore / SqliteCommerceCatalogStore
+  -> commerce_* tables
+
+catalog-app-api.openapi.json
+  -> owner-only .sdkgen.json
+  -> @sdkwork/sdk-generator
+  -> @sdkwork/catalog-app-sdk
 ```
 
-Migration status: **complete**.
+`sdkwork-api-catalog-assembly` composes executable routers. The standalone gateway supplies the
+SDKWork web-framework chain and IAM request context. Platform deployment may embed the same public
+router exports without duplicating route ownership.
 
-## 2. Technology Choices
+## Module Responsibilities
 
-- **Rust** domain services and SQLx repositories (`RUST_CODE_SPEC.md`)
-- **Axum** HTTP routers integrated via `sdkwork-web-framework` (`WEB_FRAMEWORK_SPEC.md`)
-- **sqlx** for Postgres/SQLite repository implementations (`DATABASE_FRAMEWORK_SPEC.md`)
-- **Sibling path dependencies** from this repository's `Cargo.toml` — cross-T1 references use `sdkwork_commerce_*` crate names per `sdkwork-<domain>-<capability>-service` naming
+| Module | Responsibility |
+| --- | --- |
+| `sdkwork-routes-catalog-app-api` | Thin Axum extraction, IAM scope projection, validation, DTO mapping, and response selection |
+| `sdkwork-merchandise-web-support` | Shared Catalog store port, web DTOs, mapping, and SDKWork response helpers |
+| `sdkwork-merchandise-repository-sqlx` | Tenant-scoped Postgres/SQLite queries and exact offset-page counts |
+| `sdkwork-api-catalog-assembly` | Host-neutral executable route composition |
+| `sdkwork-api-catalog-standalone-gateway` | Independent runtime, framework bootstrap, and IAM middleware |
+| `sdkwork-catalog-app-sdk` | Owner-only OpenAPI generation and composed TypeScript facade |
 
-## 3. System Boundaries And Modules
+## API Model
 
-| Layer | Owner | Notes |
-| --- | --- | --- |
-| Domain commands/queries | `scaffold` | Business validation and ports |
-| SQL repositories | `sdkwork-catalog-repository-sqlx` | Tenant-scoped persistence |
-| HTTP route builders | sdkwork-routes-catalog-app-api | `build_*_router` exports without IAM |
-| IAM / gateway composition | `sdkwork-api-catalog-standalone-gateway` | IAM middleware at T1 standalone-gateway |
-| OpenAPI / SDK authority | `sdkwork-catalog/sdks/` | Per-T1 SDK families |
+The canonical app resources are `catalog.categories`, `catalog.attributes`, `catalog.products`,
+`catalog.products.skus`, `catalog.skus`, `cart.items`, and `addresses`. The app surface uses product
+terminology; technical SPU aliases are not duplicated in public routes.
 
-## 4. Directory And Package Layout
+Every list handler validates `page` and `page_size` before repository execution. Repository queries
+apply the same tenant, organization, status, and resource filters to both the bounded data query and
+the exact count query. Response construction uses `sdkwork-utils-rust::http_api::PageInfo`.
 
-Standard 7-crate capability workspace:
+## Security And Privacy
 
-- `crates/sdkwork-catalog-repository-sqlx/`
-- `crates/sdkwork-routes-catalog-app-api/`
-- `crates/sdkwork-catalog-database-host/`
-- `crates/sdkwork-catalog-service-host/`
-- `crates/sdkwork-api-catalog-standalone-gateway/`
+- Tenant and principal scope comes only from `IamAppContext`.
+- App browse operations do not accept organization overrides and expose only active resources.
+- Response DTOs omit tenant, organization, and owner-user identifiers.
+- Address and cart mutations scope SQL predicates to the authenticated tenant and user.
+- Errors are mapped to `ProblemDetail` without SQL or internal dependency details.
 
-No PC application root in this repository yet.
+## SDK Generation
 
-## 5. API, SDK, And Data Ownership
+The authority document is `apis/app-api/catalog/catalog-app-api.openapi.json`. The generation
+wrapper copies it into the SDK family and materializes local response references only in the derived
+`.sdkgen.json` input required by the strict generator. Generated transport remains under
+`generated/server-openapi`; consumers import the composed `@sdkwork/catalog-app-sdk` facade.
 
-- App API prefix: `/app/v3/api/catalog`
-- Backend API: served through the T1 `*-standalone-gateway` where applicable.
-- Table prefix: `commerce_` for capability-owned tables (`DOMAIN_SPEC` domain=commerce)
-- Public SDK consumption: generated per-T1 SDK families; do not hand-craft raw HTTP (`SDK_SPEC.md`)
+The family manifest declares `sdkOwner: sdkwork-catalog`,
+`apiAuthority: sdkwork-catalog-app-api`, 16 owner-only operations, and no dependency-owned API copies.
 
-## 6. Security, Privacy, And Observability
+## Verification
 
-- Authentication and tenant context are applied at the T1 `*-standalone-gateway` IAM middleware; handlers read `IamAppContext` from extensions.
-- Write routes require idempotency and request-hash headers where applicable (`API_SPEC.md`, `SECURITY_SPEC.md`).
-- Ledger, payment, and account mutations must fail closed on validation errors.
-- Structured errors use `CommerceServiceError` contracts; do not leak internal SQL details to clients.
-
-## 7. Deployment And Runtime Topology
-
-- Local development: `cargo test --workspace` in this repository.
-- Independent deployment via `sdkwork-api-catalog-standalone-gateway`; production gateway routing is owned by deployment/app topology specs.
-
-## 8. Architecture Decision Index
-
-- Commerce repository dissolution: `../sdkwork-specs/MIGRATION_SPEC.md` §8
-
-## 9. Verification
-
-```bash
+```powershell
+cargo fmt -- --check
 cargo test --workspace
+pnpm sdk:generate
+node ../sdkwork-specs/tools/check-api-operation-patterns.mjs --workspace .
+node ../sdkwork-specs/tools/check-api-response-envelope.mjs --workspace .
+node ../sdkwork-specs/tools/check-pagination.mjs --workspace .
+node ../sdkwork-specs/tools/check-sdk-standard.mjs --workspace .
+node ../sdkwork-specs/tools/check-route-path-collisions.mjs --root .
 ```

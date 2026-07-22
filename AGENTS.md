@@ -10,7 +10,10 @@ Read `../sdkwork-specs/SOUL.md` before executing tasks in this root.
 - Capability: `catalog`
 - Table prefix: `commerce_`
 - App API prefix: `/app/v3/api/catalog`
-- Backend API prefix: `/backend/v3/api/catalog`
+
+Catalog owns only its app API. Merchandise management routes under
+`/backend/v3/api/catalog/*` are owned by `sdkwork-merchandise`, published by
+`sdkwork-shop-backend-api`, and must not be duplicated in this repository.
 
 This is a **T1 commerce capability repository**. The `sdkwork-commerce (deleted)` monolith has been dissolved (see `../sdkwork-specs/MIGRATION_SPEC.md` §8). This repository is self-contained with its own API server, persistence, IAM middleware, and SDK surfaces.
 

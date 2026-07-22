@@ -1,5 +1,5 @@
-use sdkwork_database_sqlx::DatabasePool;
 use sdkwork_catalog_database_host::{bootstrap_catalog_database_from_env, CatalogDatabaseHost};
+use sdkwork_database_sqlx::DatabasePool;
 
 pub struct CatalogServiceHost {
     database: CatalogDatabaseHost,
@@ -7,7 +7,9 @@ pub struct CatalogServiceHost {
 
 impl CatalogServiceHost {
     pub async fn new() -> Self {
-        Self::from_env().await.expect("catalog service host bootstrap failed")
+        Self::from_env()
+            .await
+            .expect("catalog service host bootstrap failed")
     }
 
     pub async fn from_env() -> Result<Self, String> {

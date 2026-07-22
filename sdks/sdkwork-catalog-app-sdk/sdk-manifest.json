@@ -21,6 +21,7 @@
   },
   "sdkOwner": "sdkwork-catalog",
   "apiAuthority": "sdkwork-catalog-app-api",
+  "ownerOnlyOperationCount": 16,
   "discoverySurface": {
     "sdkTarget": "app",
     "apiPrefix": "/app/v3/api",
@@ -42,7 +43,7 @@
     {
       "language": "typescript",
       "workspace": "sdkwork-catalog-app-sdk-typescript",
-      "generationState": "source_ready",
+      "generationState": "materialized",
       "releaseState": "not_published",
       "packagePath": "sdkwork-catalog-app-sdk-typescript/generated/server-openapi",
       "manifestPath": "sdkwork-catalog-app-sdk-typescript/generated/server-openapi/package.json",

@@ -75,7 +75,9 @@
       ],
       "standard": "../../../sdkwork-specs/SDK_SPEC.md"
     },
-    "publicExports": [],
+    "publicExports": [
+      "sdkwork-catalog-app-sdk-typescript/src/index.ts"
+    ],
     "runtimeEntrypoints": [
       "sdk-manifest.json"
     ],

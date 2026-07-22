@@ -27,7 +27,11 @@ client.setAuthToken('your-auth-token');
 client.setAccessToken('your-access-token');
 
 // Use the SDK
-const result = await client.cart.current.retrieve();
+const params = {
+  page: 1,
+  page_size: 2,
+};
+const result = await client.cart.items.list(params);
 ```
 
 ## Authentication
@@ -56,15 +60,17 @@ const client = new SdkworkAppClient({
 
 - `client.catalog` - catalog API
 - `client.cart` - cart API
+- `client.delivery` - delivery API
 
 ## Usage Examples
 
 ### catalog
 
 ```typescript
-// Catalog attributes list.
+// List active catalog attributes.
 const params = {
-  category_id: 'category_id',
+  page: 1,
+  page_size: 2,
 };
 const result = await client.catalog.attributes.list(params);
 ```
@@ -72,8 +78,23 @@ const result = await client.catalog.attributes.list(params);
 ### cart
 
 ```typescript
-// Cart current retrieve.
-const result = await client.cart.current.retrieve();
+// List the authenticated user's cart items.
+const params = {
+  page: 1,
+  page_size: 2,
+};
+const result = await client.cart.items.list(params);
+```
+
+### delivery
+
+```typescript
+// List the authenticated user's delivery addresses.
+const params = {
+  page: 1,
+  page_size: 2,
+};
+const result = await client.delivery.addresses.list(params);
 ```
 
 ## Error Handling
@@ -82,7 +103,11 @@ const result = await client.cart.current.retrieve();
 import { SdkworkAppClient, NetworkError, TimeoutError, AuthenticationError } from '@sdkwork/catalog-app-sdk';
 
 try {
-  const result = await client.cart.current.retrieve();
+  const params = {
+    page: 1,
+    page_size: 2,
+  };
+  const result = await client.cart.items.list(params);
 } catch (error) {
   if (error instanceof AuthenticationError) {
     console.error('Authentication failed:', error.message);

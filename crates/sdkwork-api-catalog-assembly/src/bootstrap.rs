@@ -13,6 +13,5 @@ pub async fn assemble_api_router(host: Arc<CatalogServiceHost>) -> ApiAssembly {
     router = router.merge(
         sdkwork_routes_catalog_app_api::build_catalog_app_router_with_framework(host.clone()).await,
     );
-    router = router.merge(sdkwork_routes_catalog_backend_api::gateway_mount(host).await);
     ApiAssembly { router }
 }

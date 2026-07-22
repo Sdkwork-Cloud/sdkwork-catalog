@@ -1,125 +1,82 @@
 import { appApiPath } from './paths';
 import type { HttpClient } from '../http/client';
 
-import type { SdkWorkPageData } from '../types';
+import type { CatalogAttributePageData, CatalogCategory, CatalogCategoryPageData, CatalogProduct, CatalogProductPageData, CatalogSku, CatalogSkuPageData } from '../types';
 
-
-export interface CatalogSpusListParams {
-  q?: string;
-  categoryId?: string;
-  productType?: string;
-  page?: number;
-  pageSize?: number;
-  cursor?: string;
-}
-
-export class CatalogSpusApi {
-  private client: HttpClient;
-
-  constructor(client: HttpClient) {
-    this.client = client;
-  }
-
-
-/** Catalog spus list. */
-  async list(params?: CatalogSpusListParams): Promise<SdkWorkPageData> {
-    const query = buildQueryString([
-      { name: 'q', value: params?.q, style: 'form', explode: true, allowReserved: false },
-      { name: 'category_id', value: params?.categoryId, style: 'form', explode: true, allowReserved: false },
-      { name: 'product_type', value: params?.productType, style: 'form', explode: true, allowReserved: false },
-      { name: 'page', value: params?.page, style: 'form', explode: true, allowReserved: false },
-      { name: 'page_size', value: params?.pageSize, style: 'form', explode: true, allowReserved: false },
-      { name: 'cursor', value: params?.cursor, style: 'form', explode: true, allowReserved: false },
-    ]);
-    return this.client.get<SdkWorkPageData>(appendQueryString(appApiPath(`/catalog/spus`), query));
-  }
-
-/** Catalog spus retrieve. */
-  async retrieve(spuId: string): Promise<Record<string, unknown>> {
-    return this.client.get<Record<string, unknown>>(appApiPath(`/catalog/spus/${serializePathParameter(spuId, { name: 'spuId', style: 'simple', explode: false })}`));
-  }
-}
-
-export interface CatalogSkusPricesRetrieveParams {
-  currencyCode?: string;
-  channel?: string;
-}
-
-export class CatalogSkusPricesApi {
-  private client: HttpClient;
-
-  constructor(client: HttpClient) {
-    this.client = client;
-  }
-
-
-/** Catalog skus prices retrieve. */
-  async retrieve(skuId: string, params?: CatalogSkusPricesRetrieveParams): Promise<Record<string, unknown>> {
-    const query = buildQueryString([
-      { name: 'currency_code', value: params?.currencyCode, style: 'form', explode: true, allowReserved: false },
-      { name: 'channel', value: params?.channel, style: 'form', explode: true, allowReserved: false },
-    ]);
-    return this.client.get<Record<string, unknown>>(appendQueryString(appApiPath(`/catalog/skus/${serializePathParameter(skuId, { name: 'skuId', style: 'simple', explode: false })}/prices`), query));
-  }
-}
 
 export class CatalogSkusApi {
   private client: HttpClient;
-  public readonly prices: CatalogSkusPricesApi;
 
   constructor(client: HttpClient) {
     this.client = client;
-    this.prices = new CatalogSkusPricesApi(client);
   }
 
 
-/** Catalog skus retrieve. */
-  async retrieve(skuId: string): Promise<Record<string, unknown>> {
-    return this.client.get<Record<string, unknown>>(appApiPath(`/catalog/skus/${serializePathParameter(skuId, { name: 'skuId', style: 'simple', explode: false })}`));
+/** Retrieve an active catalog SKU. */
+  async retrieve(skuId: string): Promise<CatalogSku> {
+    return this.client.get<CatalogSku>(appApiPath(`/catalog/skus/${serializePathParameter(skuId, { name: 'skuId', style: 'simple', explode: false })}`));
+  }
+}
+
+export interface CatalogProductsSkusListParams {
+  page?: number;
+  pageSize?: number;
+}
+
+export class CatalogProductsSkusApi {
+  private client: HttpClient;
+
+  constructor(client: HttpClient) {
+    this.client = client;
+  }
+
+
+/** List active SKUs for a catalog product. */
+  async list(productId: string, params?: CatalogProductsSkusListParams): Promise<CatalogSkuPageData> {
+    const query = buildQueryString([
+      { name: 'page', value: params?.page, style: 'form', explode: true, allowReserved: false },
+      { name: 'page_size', value: params?.pageSize, style: 'form', explode: true, allowReserved: false },
+    ]);
+    return this.client.get<CatalogSkuPageData>(appendQueryString(appApiPath(`/catalog/products/${serializePathParameter(productId, { name: 'productId', style: 'simple', explode: false })}/skus`), query));
   }
 }
 
 export interface CatalogProductsListParams {
-  q?: string;
   categoryId?: string;
   productType?: string;
-  status?: string;
   page?: number;
   pageSize?: number;
-  sort?: string;
 }
 
 export class CatalogProductsApi {
   private client: HttpClient;
+  public readonly skus: CatalogProductsSkusApi;
 
   constructor(client: HttpClient) {
     this.client = client;
+    this.skus = new CatalogProductsSkusApi(client);
   }
 
 
-/** Catalog products list. */
-  async list(params?: CatalogProductsListParams): Promise<SdkWorkPageData> {
+/** List active catalog products. */
+  async list(params?: CatalogProductsListParams): Promise<CatalogProductPageData> {
     const query = buildQueryString([
-      { name: 'q', value: params?.q, style: 'form', explode: true, allowReserved: false },
       { name: 'category_id', value: params?.categoryId, style: 'form', explode: true, allowReserved: false },
       { name: 'product_type', value: params?.productType, style: 'form', explode: true, allowReserved: false },
-      { name: 'status', value: params?.status, style: 'form', explode: true, allowReserved: false },
       { name: 'page', value: params?.page, style: 'form', explode: true, allowReserved: false },
       { name: 'page_size', value: params?.pageSize, style: 'form', explode: true, allowReserved: false },
-      { name: 'sort', value: params?.sort, style: 'form', explode: true, allowReserved: false },
     ]);
-    return this.client.get<SdkWorkPageData>(appendQueryString(appApiPath(`/catalog/products`), query));
+    return this.client.get<CatalogProductPageData>(appendQueryString(appApiPath(`/catalog/products`), query));
   }
 
-/** Catalog products retrieve. */
-  async retrieve(productId: string): Promise<Record<string, unknown>> {
-    return this.client.get<Record<string, unknown>>(appApiPath(`/catalog/products/${serializePathParameter(productId, { name: 'productId', style: 'simple', explode: false })}`));
+/** Retrieve an active catalog product. */
+  async retrieve(productId: string): Promise<CatalogProduct> {
+    return this.client.get<CatalogProduct>(appApiPath(`/catalog/products/${serializePathParameter(productId, { name: 'productId', style: 'simple', explode: false })}`));
   }
 }
 
 export interface CatalogCategoriesListParams {
   parentId?: string;
-  status?: string;
   page?: number;
   pageSize?: number;
 }
@@ -132,25 +89,25 @@ export class CatalogCategoriesApi {
   }
 
 
-/** Catalog categories list. */
-  async list(params?: CatalogCategoriesListParams): Promise<SdkWorkPageData> {
+/** List active catalog categories. */
+  async list(params?: CatalogCategoriesListParams): Promise<CatalogCategoryPageData> {
     const query = buildQueryString([
       { name: 'parent_id', value: params?.parentId, style: 'form', explode: true, allowReserved: false },
-      { name: 'status', value: params?.status, style: 'form', explode: true, allowReserved: false },
       { name: 'page', value: params?.page, style: 'form', explode: true, allowReserved: false },
       { name: 'page_size', value: params?.pageSize, style: 'form', explode: true, allowReserved: false },
     ]);
-    return this.client.get<SdkWorkPageData>(appendQueryString(appApiPath(`/catalog/categories`), query));
+    return this.client.get<CatalogCategoryPageData>(appendQueryString(appApiPath(`/catalog/categories`), query));
   }
 
-/** Catalog categories retrieve. */
-  async retrieve(categoryId: string): Promise<Record<string, unknown>> {
-    return this.client.get<Record<string, unknown>>(appApiPath(`/catalog/categories/${serializePathParameter(categoryId, { name: 'categoryId', style: 'simple', explode: false })}`));
+/** Retrieve an active catalog category. */
+  async retrieve(categoryId: string): Promise<CatalogCategory> {
+    return this.client.get<CatalogCategory>(appApiPath(`/catalog/categories/${serializePathParameter(categoryId, { name: 'categoryId', style: 'simple', explode: false })}`));
   }
 }
 
 export interface CatalogAttributesListParams {
-  categoryId?: string;
+  page?: number;
+  pageSize?: number;
 }
 
 export class CatalogAttributesApi {
@@ -161,30 +118,29 @@ export class CatalogAttributesApi {
   }
 
 
-/** Catalog attributes list. */
-  async list(params?: CatalogAttributesListParams): Promise<SdkWorkPageData> {
+/** List active catalog attributes. */
+  async list(params?: CatalogAttributesListParams): Promise<CatalogAttributePageData> {
     const query = buildQueryString([
-      { name: 'category_id', value: params?.categoryId, style: 'form', explode: true, allowReserved: false },
+      { name: 'page', value: params?.page, style: 'form', explode: true, allowReserved: false },
+      { name: 'page_size', value: params?.pageSize, style: 'form', explode: true, allowReserved: false },
     ]);
-    return this.client.get<SdkWorkPageData>(appendQueryString(appApiPath(`/catalog/attributes`), query));
+    return this.client.get<CatalogAttributePageData>(appendQueryString(appApiPath(`/catalog/attributes`), query));
   }
 }
 
 export class CatalogApi {
-  private client: HttpClient;
+
   public readonly attributes: CatalogAttributesApi;
   public readonly categories: CatalogCategoriesApi;
   public readonly products: CatalogProductsApi;
   public readonly skus: CatalogSkusApi;
-  public readonly spus: CatalogSpusApi;
 
   constructor(client: HttpClient) {
-    this.client = client;
+
     this.attributes = new CatalogAttributesApi(client);
     this.categories = new CatalogCategoriesApi(client);
     this.products = new CatalogProductsApi(client);
     this.skus = new CatalogSkusApi(client);
-    this.spus = new CatalogSpusApi(client);
   }
 
 }

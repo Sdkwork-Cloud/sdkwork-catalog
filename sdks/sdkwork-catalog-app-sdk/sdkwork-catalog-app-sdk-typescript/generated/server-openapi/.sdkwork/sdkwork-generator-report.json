@@ -10,37 +10,132 @@
   },
   "status": "ok",
   "mode": "apply",
-  "hasChanges": false,
-  "hasDestructiveChanges": false,
-  "changeFingerprint": "a1412405a797abf5eb4921a4b5983193111c83e0ad825003532798a82a11278d",
+  "hasChanges": true,
+  "hasDestructiveChanges": true,
+  "changeFingerprint": "5b7ce52572147eb374587daefaf429e4287d2f2b1251707fab6e9666390844a4",
   "changeImpact": {
     "schemaVersion": 1,
-    "areas": [],
-    "details": [],
-    "requiresVerification": false,
-    "summary": "No generated, scaffold, or backup changes detected. Verification can be skipped."
+    "areas": [
+      "api-surface",
+      "documentation"
+    ],
+    "details": [
+      {
+        "area": "api-surface",
+        "paths": [
+          "src/api/addresses.ts",
+          "src/api/delivery.ts",
+          "src/api/index.ts",
+          "src/sdk.ts"
+        ]
+      },
+      {
+        "area": "documentation",
+        "paths": [
+          "README.md"
+        ]
+      }
+    ],
+    "requiresVerification": true,
+    "summary": "Detected impact areas: api-surface, documentation. Verification is required."
   },
   "executionDecision": {
     "schemaVersion": 1,
-    "riskLevel": "low",
-    "nextAction": "skip",
+    "riskLevel": "high",
+    "nextAction": "verify",
     "requiresManualReview": false,
     "applyRequiresExpectedFingerprint": false,
-    "summary": "No actionable changes were detected. No apply or verification step is required.",
+    "summary": "Changes have been applied. Run the required verification plan now.",
     "reasons": [
-      "no-actionable-changes"
+      "deleted-generated-files",
+      "manual-review-required",
+      "verification-required"
     ]
   },
   "executionHandoff": {
     "schemaVersion": 1,
-    "summary": "No further commands are required.",
-    "steps": []
+    "summary": "Run the required verification commands now.",
+    "steps": [
+      {
+        "id": "verify-check",
+        "title": "Unified package check",
+        "required": true,
+        "rationale": "Validate the generated package with the unified publish helper. Triggered by: api-surface, documentation.",
+        "workingDirectory": "E:\\sdkwork-space\\sdkwork-catalog\\sdks\\sdkwork-catalog-app-sdk\\sdkwork-catalog-app-sdk-typescript\\generated\\server-openapi",
+        "command": "node",
+        "args": [
+          "./bin/publish-core.mjs",
+          "--language",
+          "typescript",
+          "--project-dir",
+          ".",
+          "--action",
+          "check"
+        ],
+        "displayCommand": "node ./bin/publish-core.mjs --language typescript --project-dir . --action check"
+      },
+      {
+        "id": "verify-build",
+        "title": "Unified package build",
+        "required": true,
+        "rationale": "Run the full package build because this language uses a lighter check path than the final build. Triggered by: api-surface, documentation.",
+        "workingDirectory": "E:\\sdkwork-space\\sdkwork-catalog\\sdks\\sdkwork-catalog-app-sdk\\sdkwork-catalog-app-sdk-typescript\\generated\\server-openapi",
+        "command": "node",
+        "args": [
+          "./bin/publish-core.mjs",
+          "--language",
+          "typescript",
+          "--project-dir",
+          ".",
+          "--action",
+          "build"
+        ],
+        "displayCommand": "node ./bin/publish-core.mjs --language typescript --project-dir . --action build"
+      }
+    ]
   },
   "verificationPlan": {
-    "shouldRun": false,
-    "runPhase": "skip",
-    "summary": "No generated, scaffold, or backup changes detected. Verification can be skipped.",
-    "steps": []
+    "shouldRun": true,
+    "runPhase": "now",
+    "summary": "Detected impact areas: api-surface, documentation. Verification is required. Run the required verification commands now against the generated SDK output.",
+    "steps": [
+      {
+        "id": "check",
+        "title": "Unified package check",
+        "required": true,
+        "rationale": "Validate the generated package with the unified publish helper. Triggered by: api-surface, documentation.",
+        "workingDirectory": "E:\\sdkwork-space\\sdkwork-catalog\\sdks\\sdkwork-catalog-app-sdk\\sdkwork-catalog-app-sdk-typescript\\generated\\server-openapi",
+        "command": "node",
+        "args": [
+          "./bin/publish-core.mjs",
+          "--language",
+          "typescript",
+          "--project-dir",
+          ".",
+          "--action",
+          "check"
+        ],
+        "displayCommand": "node ./bin/publish-core.mjs --language typescript --project-dir . --action check"
+      },
+      {
+        "id": "build",
+        "title": "Unified package build",
+        "required": true,
+        "rationale": "Run the full package build because this language uses a lighter check path than the final build. Triggered by: api-surface, documentation.",
+        "workingDirectory": "E:\\sdkwork-space\\sdkwork-catalog\\sdks\\sdkwork-catalog-app-sdk\\sdkwork-catalog-app-sdk-typescript\\generated\\server-openapi",
+        "command": "node",
+        "args": [
+          "./bin/publish-core.mjs",
+          "--language",
+          "typescript",
+          "--project-dir",
+          ".",
+          "--action",
+          "build"
+        ],
+        "displayCommand": "node ./bin/publish-core.mjs --language typescript --project-dir . --action build"
+      }
+    ]
   },
   "sdk": {
     "name": "sdkwork-catalog-app-sdk",
@@ -56,24 +151,30 @@
     "localVersions": []
   },
   "stats": {
-    "totalFiles": 81,
-    "models": 56,
-    "apis": 2,
-    "types": 58
+    "totalFiles": 61,
+    "models": 35,
+    "apis": 3,
+    "types": 37
   },
   "warnings": [],
   "syncSummary": {
     "dryRun": false,
     "controlPlaneEnabled": true,
-    "writtenFiles": 0,
+    "writtenFiles": 4,
     "skippedScaffoldFiles": 2,
-    "skippedUnchangedGeneratedFiles": 79,
-    "deletedGeneratedFiles": 0,
+    "skippedUnchangedGeneratedFiles": 55,
+    "deletedGeneratedFiles": 1,
     "changeSummaryPath": ".sdkwork/sdkwork-generator-changes.json",
-    "changeFingerprint": "a1412405a797abf5eb4921a4b5983193111c83e0ad825003532798a82a11278d",
+    "changeFingerprint": "5b7ce52572147eb374587daefaf429e4287d2f2b1251707fab6e9666390844a4",
     "changes": {
-      "createdGeneratedFiles": [],
-      "updatedGeneratedFiles": [],
+      "createdGeneratedFiles": [
+        "src/api/delivery.ts"
+      ],
+      "updatedGeneratedFiles": [
+        "README.md",
+        "src/api/index.ts",
+        "src/sdk.ts"
+      ],
       "unchangedGeneratedFiles": [
         "bin/publish-core.mjs",
         "bin/publish.ps1",
@@ -83,79 +184,57 @@
         "CHANGELOG.md",
         "LICENSE",
         "package.json",
-        "README.md",
         "sdkwork-sdk.json",
         "src/api/base.ts",
         "src/api/cart.ts",
         "src/api/catalog.ts",
-        "src/api/index.ts",
         "src/api/paths.ts",
         "src/auth/index.ts",
         "src/http/client.ts",
         "src/http/index.ts",
         "src/index.ts",
-        "src/sdk.ts",
-        "src/types/after-sales-event.ts",
-        "src/types/after-sales-item.ts",
-        "src/types/after-sales-request.ts",
-        "src/types/after-sales-return-shipment.ts",
-        "src/types/commerce-operation-command.ts",
+        "src/types/add-cart-item-request.ts",
+        "src/types/address-data.ts",
+        "src/types/address-list-response.ts",
+        "src/types/address-page-data.ts",
+        "src/types/address-response.ts",
+        "src/types/address.ts",
+        "src/types/cart-item-data.ts",
+        "src/types/cart-item-list-response.ts",
+        "src/types/cart-item-page-data.ts",
+        "src/types/cart-item-response.ts",
+        "src/types/cart-item.ts",
+        "src/types/catalog-attribute-list-response.ts",
+        "src/types/catalog-attribute-page-data.ts",
+        "src/types/catalog-attribute.ts",
+        "src/types/catalog-category-data.ts",
+        "src/types/catalog-category-list-response.ts",
+        "src/types/catalog-category-page-data.ts",
+        "src/types/catalog-category-response.ts",
+        "src/types/catalog-category.ts",
+        "src/types/catalog-product-data.ts",
+        "src/types/catalog-product-list-response.ts",
+        "src/types/catalog-product-page-data.ts",
+        "src/types/catalog-product-response.ts",
+        "src/types/catalog-product.ts",
+        "src/types/catalog-sku-data.ts",
+        "src/types/catalog-sku-list-response.ts",
+        "src/types/catalog-sku-page-data.ts",
+        "src/types/catalog-sku-response.ts",
+        "src/types/catalog-sku.ts",
         "src/types/common.ts",
-        "src/types/create-after-sales-request-item.ts",
-        "src/types/create-after-sales-request.ts",
-        "src/types/create-after-sales-return-shipment-request.ts",
-        "src/types/create-shop-service-area-request.ts",
-        "src/types/field-error.ts",
+        "src/types/create-address-request.ts",
         "src/types/index.ts",
         "src/types/page-info.ts",
         "src/types/problem-detail.ts",
         "src/types/sdk-work-api-response.ts",
-        "src/types/sdk-work-command-data.ts",
-        "src/types/sdk-work-command-response.ts",
-        "src/types/sdk-work-list-response.ts",
-        "src/types/sdk-work-page-data.ts",
-        "src/types/sdk-work-platform-error-code.ts",
-        "src/types/sdk-work-resource-data.ts",
-        "src/types/sdk-work-resource-response.ts",
-        "src/types/shop-application.ts",
-        "src/types/shop-brand-authorization.ts",
-        "src/types/shop-business-hour.ts",
-        "src/types/shop-category-binding.ts",
-        "src/types/shop-channel.ts",
-        "src/types/shop-customer-service.ts",
-        "src/types/shop-deposit-account.ts",
-        "src/types/shop-detail.ts",
-        "src/types/shop-fulfillment-profile.ts",
-        "src/types/shop-metric-snapshot.ts",
-        "src/types/shop-policy.ts",
-        "src/types/shop-qualification.ts",
-        "src/types/shop-readiness-item.ts",
-        "src/types/shop-readiness.ts",
-        "src/types/shop-return-address.ts",
-        "src/types/shop-risk-signal.ts",
-        "src/types/shop-service-area.ts",
-        "src/types/shop-settlement-profile.ts",
-        "src/types/shop-shipping-template.ts",
-        "src/types/shop-status-event.ts",
-        "src/types/shop-summary.ts",
-        "src/types/shop-verification.ts",
-        "src/types/submit-shop-application-request.ts",
-        "src/types/update-after-sales-request.ts",
-        "src/types/update-shop-business-hour-request.ts",
-        "src/types/update-shop-channel-request.ts",
-        "src/types/update-shop-fulfillment-profile-request.ts",
-        "src/types/update-shop-policy-request.ts",
-        "src/types/update-shop-service-area-request.ts",
-        "src/types/update-shop-settlement-profile-request.ts",
-        "src/types/upsert-shop-brand-authorization-request.ts",
-        "src/types/upsert-shop-category-binding-request.ts",
-        "src/types/upsert-shop-customer-service-request.ts",
-        "src/types/upsert-shop-qualification-request.ts",
-        "src/types/upsert-shop-return-address-request.ts",
-        "src/types/upsert-shop-shipping-template-request.ts",
+        "src/types/update-address-request.ts",
+        "src/types/update-cart-item-request.ts",
         "tsconfig.json"
       ],
-      "deletedGeneratedFiles": [],
+      "deletedGeneratedFiles": [
+        "src/api/addresses.ts"
+      ],
       "scaffoldedFiles": [],
       "preservedScaffoldFiles": [
         "custom/build-runtime.mjs",
@@ -165,26 +244,84 @@
     },
     "impact": {
       "schemaVersion": 1,
-      "areas": [],
-      "details": [],
-      "requiresVerification": false,
-      "summary": "No generated, scaffold, or backup changes detected. Verification can be skipped."
+      "areas": [
+        "api-surface",
+        "documentation"
+      ],
+      "details": [
+        {
+          "area": "api-surface",
+          "paths": [
+            "src/api/addresses.ts",
+            "src/api/delivery.ts",
+            "src/api/index.ts",
+            "src/sdk.ts"
+          ]
+        },
+        {
+          "area": "documentation",
+          "paths": [
+            "README.md"
+          ]
+        }
+      ],
+      "requiresVerification": true,
+      "summary": "Detected impact areas: api-surface, documentation. Verification is required."
     },
     "verificationPlan": {
-      "shouldRun": false,
-      "runPhase": "skip",
-      "summary": "No generated, scaffold, or backup changes detected. Verification can be skipped.",
-      "steps": []
+      "shouldRun": true,
+      "runPhase": "now",
+      "summary": "Detected impact areas: api-surface, documentation. Verification is required. Run the required verification commands now against the generated SDK output.",
+      "steps": [
+        {
+          "id": "check",
+          "title": "Unified package check",
+          "required": true,
+          "rationale": "Validate the generated package with the unified publish helper. Triggered by: api-surface, documentation.",
+          "workingDirectory": "E:\\sdkwork-space\\sdkwork-catalog\\sdks\\sdkwork-catalog-app-sdk\\sdkwork-catalog-app-sdk-typescript\\generated\\server-openapi",
+          "command": "node",
+          "args": [
+            "./bin/publish-core.mjs",
+            "--language",
+            "typescript",
+            "--project-dir",
+            ".",
+            "--action",
+            "check"
+          ],
+          "displayCommand": "node ./bin/publish-core.mjs --language typescript --project-dir . --action check"
+        },
+        {
+          "id": "build",
+          "title": "Unified package build",
+          "required": true,
+          "rationale": "Run the full package build because this language uses a lighter check path than the final build. Triggered by: api-surface, documentation.",
+          "workingDirectory": "E:\\sdkwork-space\\sdkwork-catalog\\sdks\\sdkwork-catalog-app-sdk\\sdkwork-catalog-app-sdk-typescript\\generated\\server-openapi",
+          "command": "node",
+          "args": [
+            "./bin/publish-core.mjs",
+            "--language",
+            "typescript",
+            "--project-dir",
+            ".",
+            "--action",
+            "build"
+          ],
+          "displayCommand": "node ./bin/publish-core.mjs --language typescript --project-dir . --action build"
+        }
+      ]
     },
     "executionDecision": {
       "schemaVersion": 1,
-      "riskLevel": "low",
-      "nextAction": "skip",
+      "riskLevel": "high",
+      "nextAction": "verify",
       "requiresManualReview": false,
       "applyRequiresExpectedFingerprint": false,
-      "summary": "No actionable changes were detected. No apply or verification step is required.",
+      "summary": "Changes have been applied. Run the required verification plan now.",
       "reasons": [
-        "no-actionable-changes"
+        "deleted-generated-files",
+        "manual-review-required",
+        "verification-required"
       ]
     },
     "backedUpFiles": [],

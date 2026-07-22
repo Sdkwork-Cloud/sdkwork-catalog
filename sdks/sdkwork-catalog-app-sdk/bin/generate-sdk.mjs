@@ -17,7 +17,14 @@ const scriptDir = path.dirname(fileURLToPath(import.meta.url));
 const sdkRoot = path.resolve(scriptDir, "..");
 const catalogRoot = path.resolve(sdkRoot, "../..");
 const generatorBin = path.resolve(catalogRoot, "../sdkwork-sdk-generator/bin/sdkgen.js");
-const defaultInput = path.resolve(sdkRoot, "openapi/sdkwork-catalog-app-api.openapi.json");
+const authorityCopy = path.resolve(
+  sdkRoot,
+  "openapi/sdkwork-catalog-app-api.openapi.json",
+);
+const defaultInput = path.resolve(
+  sdkRoot,
+  "openapi/sdkwork-catalog-app-api.sdkgen.json",
+);
 const authorityInput = path.resolve(
   catalogRoot,
   "apis/app-api/catalog/catalog-app-api.openapi.json",
@@ -27,7 +34,9 @@ run(process.argv.slice(2));
 
 function run(argv) {
   const args = parseArgs(argv);
-  syncAuthorityOpenApi(args.input ?? defaultInput);
+  if (!args.input) {
+    syncAuthorityOpenApi(defaultInput);
+  }
   const input = args.input ? resolveCatalogPath(args.input) : defaultInput;
   ensureOpenApi(input);
 
@@ -51,15 +60,35 @@ function syncAuthorityOpenApi(targetInput) {
   if (!existsSync(authorityInput)) {
     return;
   }
-  const payload = readFileSync(authorityInput, "utf8");
-  writeFileSync(targetInput, payload, "utf8");
-  if (targetInput !== authorityInput) {
-    writeFileSync(
-      path.resolve(sdkRoot, "openapi/sdkwork-catalog-app-api.sdkgen.json"),
-      payload,
-      "utf8",
-    );
+  const authority = JSON.parse(readFileSync(authorityInput, "utf8"));
+  writeFileSync(authorityCopy, `${JSON.stringify(authority, null, 2)}\n`, "utf8");
+  const generatorInput = materializeGeneratorInput(authority);
+  writeFileSync(targetInput, `${JSON.stringify(generatorInput, null, 2)}\n`, "utf8");
+}
+
+function materializeGeneratorInput(authority) {
+  const generatorInput = structuredClone(authority);
+  const reusableResponses = generatorInput.components?.responses ?? {};
+  for (const pathItem of Object.values(generatorInput.paths ?? {})) {
+    for (const operation of Object.values(pathItem)) {
+      if (!operation || typeof operation !== "object" || !operation.responses) {
+        continue;
+      }
+      for (const [status, response] of Object.entries(operation.responses)) {
+        const prefix = "#/components/responses/";
+        if (!response?.$ref?.startsWith(prefix)) {
+          continue;
+        }
+        const name = response.$ref.slice(prefix.length);
+        const resolved = reusableResponses[name];
+        if (!resolved) {
+          fail(`unresolved response component: ${response.$ref}`);
+        }
+        operation.responses[status] = structuredClone(resolved);
+      }
+    }
   }
+  return generatorInput;
 }
 
 function generateLanguage({ language, input, baseUrl, sdkName, sdkType, apiPrefix }) {

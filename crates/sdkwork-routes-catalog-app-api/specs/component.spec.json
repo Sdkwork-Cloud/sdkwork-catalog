@@ -79,7 +79,7 @@
       "gateway_mount",
       "wrap_router_with_web_framework_from_env"
     ],
-    "routeManifest": "sdks/_route-manifests/app-api/sdkwork-routes-catalog-app-api.route-manifest.json",
+    "routeManifest": "../../apis/app-api/catalog/catalog-app-api.openapi.json",
     "sdkClients": [],
     "sdkDependencies": [],
     "dependencyApiExports": [],

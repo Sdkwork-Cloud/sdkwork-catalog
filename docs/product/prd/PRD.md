@@ -1,67 +1,50 @@
-# Catalog (browse/open) PRD
+# Catalog Product Requirements
 
 Status: active
 Owner: SDKWork maintainers
 Application: catalog
-Updated: 2026-06-24
-Specs: REQUIREMENTS_SPEC.md, DOCUMENTATION_SPEC.md
+Updated: 2026-07-22
+Specs: REQUIREMENTS_SPEC.md, API_SPEC.md, PAGINATION_SPEC.md, SDK_SPEC.md
 
-## Document Map
+## Purpose
 
-- Commerce repository dissolution: `../sdkwork-specs/MIGRATION_SPEC.md` §8
+Catalog provides the user-facing commerce discovery boundary used by SDKWork applications. Buyers
+can browse active products and resolve a product to a purchasable SKU without receiving backend
+administration operations or internal tenant and principal identifiers.
 
-## 1. Background And Problem
+## Users
 
-Public and integrator-facing catalog browse surfaces should not share the same ownership boundary as merchant admin merchandise mutations.
+- Storefront buyers browsing active categories and products
+- Application services resolving product IDs to typed SKU IDs before checkout
+- Authenticated users managing cart items and delivery addresses
 
-This repository is a **T1 commerce capability building block**. The `sdkwork-commerce (deleted)` monolith has been dissolved; this repository is self-contained with its own domain logic, persistence, HTTP route builders, API server, and IAM middleware for the **catalog** capability.
+## Owned Scope
 
-## 2. Target Users
+- Active category and attribute lists
+- Active product list and product retrieval
+- Active SKU retrieval and `catalog.products.skus.list`
+- Authenticated cart item list/create/update/delete
+- Authenticated delivery address list/create/update/delete/default selection
+- Owner-only `sdkwork-catalog-app-api` OpenAPI and `sdkwork-catalog-app-sdk`
 
-Storefront buyers, integrators, and read-only catalog consumers.
+The app API does not expose SPU aliases, unimplemented price-list routes, merchandise backend
+mutations, shop operations, order operations, or after-sales operations.
 
-## 3. Goals And Non-Goals
+## Contract Requirements
 
-### Goals
+- Every list uses `page` and `page_size` with a default of 20 and maximum of 200.
+- SQL applies tenant/data-scope filters, stable ordering, `LIMIT`, and `OFFSET`; `COUNT(*)` supplies
+  exact offset-page totals.
+- App browse operations are restricted to the IAM context organization and active resources.
+- Success responses use the SDKWork v3 envelope; errors use `ProblemDetail`.
+- Generated SDK methods expose concrete product, SKU, cart, address, and page types.
+- Checkout consumers use SKU IDs returned by `catalog.products.skus.list`; product IDs are never
+  treated as SKU IDs.
 
-- Provide browse/open catalog HTTP routes separate from merchandise admin ownership.
-- Reuse merchandise read models through explicit adapter boundaries.
+## Success Criteria
 
-### Non-Goals
-
-- Admin catalog mutations (owned by `sdkwork-merchandise`).
-- Owning SPU/SKU master write models in this repository long term.
-
-## 4. Scope
-
-- App browse/open catalog routes: categories, products, SPUs, SKUs, cart, addresses.
-- Merchandise read stores consumed via `sdkwork-catalog-repository-sqlx` read adapter (`read_adapter.rs`).
-
-Primary API prefixes:
-
-- App: `/app/v3/api/catalog`
-
-Migration status: **complete**.
-
-## 5. User Scenarios
-
-- A storefront lists published SPUs without exposing admin mutation endpoints.
-
-## 6. Success Metrics
-
-- Browse routes owned here with zero admin write endpoints after split.
-
-## 7. Phases
-
-- Phase 0 (complete): repository scaffold and standalone-gateway health.
-- Phase 3 (complete): browse/open app routes owned by catalog app router; read adapter in catalog repository crate.
-
-## 8. Linked Requirements
-
-- Commerce repository dissolution: `../sdkwork-specs/MIGRATION_SPEC.md` §8
-- Component contract: `specs/component.spec.json` (when present)
-- Machine contracts: local `specs/`, future `apis/`, and generated `sdks/`
-
-## 9. Open Questions
-
-
+- Rust routes and authority OpenAPI contain the same executable operation set.
+- Catalog App SDK generation is owner-only and idempotent.
+- No raw HTTP, generic response probing, duplicate product/SPU app routes, or historical SDK types
+  remain in the application integration path.
+- API, response-envelope, pagination, SDK, Cargo, and route-collision verification pass.

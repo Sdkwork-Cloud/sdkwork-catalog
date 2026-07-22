@@ -4,18 +4,22 @@ import type { AuthTokenManager } from '@sdkwork/sdk-common';
 
 import { CatalogApi, createCatalogApi } from './api/catalog';
 import { CartApi, createCartApi } from './api/cart';
+import { DeliveryApi, createDeliveryApi } from './api/delivery';
 
 export class SdkworkAppClient {
   private httpClient: HttpClient;
 
   public readonly catalog: CatalogApi;
   public readonly cart: CartApi;
+  public readonly delivery: DeliveryApi;
 
   constructor(config: SdkworkAppConfig) {
     this.httpClient = createHttpClient(config);
     this.catalog = createCatalogApi(this.httpClient);
 
     this.cart = createCartApi(this.httpClient);
+
+    this.delivery = createDeliveryApi(this.httpClient);
   }
   setAuthToken(token: string): this {
     this.httpClient.setAuthToken(token);

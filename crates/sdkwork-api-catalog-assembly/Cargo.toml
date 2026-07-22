@@ -12,6 +12,5 @@ path = "src/lib.rs"
 [dependencies]
 axum.workspace = true
 tokio.workspace = true
-sdkwork_catalog_service_host = { package = "sdkwork-catalog-service-host", path = "../sdkwork-catalog-service-host" }
+sdkwork_catalog_service_host.workspace = true
 sdkwork-routes-catalog-app-api = { path = "../sdkwork-routes-catalog-app-api" }
-sdkwork-routes-catalog-backend-api = { path = "../sdkwork-routes-catalog-backend-api" }
