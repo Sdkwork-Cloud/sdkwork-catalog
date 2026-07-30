@@ -3,49 +3,64 @@
   "kind": "sdkwork.database.table-registry",
   "tables": [
     {
-      "name": "commerce_product_category",
       "owner": "sdkwork-merchandise",
       "profile": "tenant_entity+dictionary_entity",
-      "complianceLevel": "L2",
-      "engine": ["postgres", "sqlite"],
+      "engine": [
+        "postgres"
+      ],
       "migration": "commerce-initial",
-      "referenceOnly": true
+      "referenceOnly": true,
+      "table_name": "commerce_product_category",
+      "compliance_level": "L2",
+      "lifecycle_status": "active"
     },
     {
-      "name": "commerce_product_attribute",
       "owner": "sdkwork-merchandise",
       "profile": "tenant_entity",
-      "complianceLevel": "L2",
-      "engine": ["postgres", "sqlite"],
+      "engine": [
+        "postgres"
+      ],
       "migration": "commerce-initial",
-      "referenceOnly": true
+      "referenceOnly": true,
+      "table_name": "commerce_product_attribute",
+      "compliance_level": "L2",
+      "lifecycle_status": "active"
     },
     {
-      "name": "commerce_price_list",
       "owner": "sdkwork-merchandise",
       "profile": "tenant_entity",
-      "complianceLevel": "L2",
-      "engine": ["postgres", "sqlite"],
+      "engine": [
+        "postgres"
+      ],
       "migration": "commerce-initial",
-      "referenceOnly": true
+      "referenceOnly": true,
+      "table_name": "commerce_price_list",
+      "compliance_level": "L2",
+      "lifecycle_status": "active"
     },
     {
-      "name": "commerce_product_spu",
       "owner": "sdkwork-merchandise",
       "profile": "tenant_entity",
-      "complianceLevel": "L2",
-      "engine": ["postgres", "sqlite"],
+      "engine": [
+        "postgres"
+      ],
       "migration": "commerce-initial",
-      "referenceOnly": true
+      "referenceOnly": true,
+      "table_name": "commerce_product_spu",
+      "compliance_level": "L2",
+      "lifecycle_status": "active"
     },
     {
-      "name": "commerce_product_sku",
       "owner": "sdkwork-merchandise",
       "profile": "tenant_entity",
-      "complianceLevel": "L2",
-      "engine": ["postgres", "sqlite"],
+      "engine": [
+        "postgres"
+      ],
       "migration": "commerce-initial",
-      "referenceOnly": true
+      "referenceOnly": true,
+      "table_name": "commerce_product_sku",
+      "compliance_level": "L2",
+      "lifecycle_status": "active"
     }
   ]
 }
