@@ -5,7 +5,4 @@
 
 mod read_adapter;
 
-pub use read_adapter::{
-    PostgresCommerceCatalogReadStore as PostgresCommerceCatalogStore,
-    SqliteCommerceCatalogReadStore as SqliteCommerceCatalogStore,
-};
+pub use read_adapter::PostgresCommerceCatalogReadStore as PostgresCommerceCatalogStore;

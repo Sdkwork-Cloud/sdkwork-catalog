@@ -8,7 +8,7 @@ use axum::routing::{get, patch, put};
 use axum::{Json, Router};
 use sdkwork_iam_context_service::IamAppContext;
 use sdkwork_merchandise_repository_sqlx::{
-    PostgresCommerceCatalogStore, SqliteCommerceCatalogStore,
+    PostgresCommerceCatalogStore,
 };
 use sdkwork_merchandise_service::{
     AddCartItemCommand, AddressListQuery, AttributeListQuery, CartRetrieveQuery, CategoryListQuery,
@@ -23,13 +23,9 @@ use sdkwork_merchandise_web_support::{
     CommerceCatalogStore, CreateAddressBody, UpdateAddressBody, UpdateCartItemBody,
 };
 use serde::Deserialize;
-use sqlx::{PgPool, SqlitePool};
+use sqlx::PgPool;
 
 use crate::subject::app_runtime_subject_from_extension;
-
-pub fn app_catalog_router_with_sqlite_pool(pool: SqlitePool) -> Router {
-    build_app_catalog_router(Arc::new(SqliteCommerceCatalogStore::new(pool)))
-}
 
 pub fn app_catalog_router_with_postgres_pool(pool: PgPool) -> Router {
     build_app_catalog_router(Arc::new(PostgresCommerceCatalogStore::new(pool)))
