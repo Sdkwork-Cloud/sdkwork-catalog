@@ -10,10 +10,7 @@ async fn main() {
     let business = assemble_api_router(host).await.router.layer(
         sdkwork_web_bootstrap::application_cors_layer_from_env(
             &["SDKWORK_CATALOG_ENVIRONMENT"],
-            &[
-                "SDKWORK_CATALOG_CORS_ALLOWED_ORIGINS",
-                "SDKWORK_CORS_ALLOWED_ORIGINS",
-            ],
+            &["SDKWORK_CORS_ALLOWED_ORIGINS"],
         ),
     );
     let app = service_router(business, ServiceRouterConfig::default().with_always_ready());
