@@ -1,6 +1,8 @@
 use sdkwork_database_config::DatabaseConfig;
 use sdkwork_database_lifecycle::{lifecycle_options_from_env, LifecycleOrchestrator};
-use sdkwork_database_spi::{DatabaseAssetProvider, DatabaseManifest, DefaultDatabaseModule};
+use sdkwork_database_spi::{
+    DatabaseAssetProvider, DatabaseManifest, DefaultDatabaseModule, SpiError,
+};
 use sdkwork_database_sqlx::{create_pool_from_config, DatabasePool};
 use std::path::PathBuf;
 use std::sync::Arc;
@@ -20,6 +22,22 @@ impl CatalogDatabaseHost {
     }
 }
 
+/// Returns the catalog [`DefaultDatabaseModule`] loaded from the catalog
+/// repository's `database/` directory.
+///
+/// # Convention
+///
+/// Each `*-database-host` crate exports this function so that federated hosts
+/// (e.g. CloudRouter) can register the module in a `DatabaseModuleRegistry`
+/// and run init + migrate + seed through
+/// `RegistryLifecycleOrchestrator::bootstrap_all`.
+pub fn database_module() -> Result<DefaultDatabaseModule, SpiError> {
+    let app_root = std::env::var("SDKWORK_CATALOG_APP_ROOT")
+        .map(PathBuf::from)
+        .unwrap_or_else(|_| PathBuf::from(env!("CARGO_MANIFEST_DIR")).join("../.."));
+    DefaultDatabaseModule::from_app_root(&app_root)
+}
+
 pub async fn bootstrap_catalog_database_from_env() -> Result<CatalogDatabaseHost, String> {
     let _ = dotenvy::dotenv();
     let config = DatabaseConfig::from_env("CATALOG")
@@ -27,11 +45,8 @@ pub async fn bootstrap_catalog_database_from_env() -> Result<CatalogDatabaseHost
     let pool = create_pool_from_config(config)
         .await
         .map_err(|error| format!("create catalog database pool failed: {error}"))?;
-    let app_root = std::env::var("SDKWORK_CATALOG_APP_ROOT")
-        .map(PathBuf::from)
-        .unwrap_or_else(|_| PathBuf::from(env!("CARGO_MANIFEST_DIR")).join("../.."));
     let module = Arc::new(
-        DefaultDatabaseModule::from_app_root(&app_root)
+        database_module()
             .map_err(|error| format!("load catalog database module failed: {error}"))?,
     );
     let manifest = DatabaseManifest::from_file(module.manifest_path())
