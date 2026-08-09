@@ -14,5 +14,6 @@ axum.workspace = true
 tokio.workspace = true
 sdkwork-web-bootstrap.workspace = true
 sdkwork-web-core.workspace = true
+sdkwork-database-sqlx.workspace = true
 sdkwork_catalog_service_host.workspace = true
 sdkwork-routes-catalog-app-api = { path = "../sdkwork-routes-catalog-app-api" }

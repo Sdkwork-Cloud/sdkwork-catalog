@@ -1686,6 +1686,7 @@ version = "0.1.0"
 dependencies = [
  "axum",
  "sdkwork-catalog-service-host",
+ "sdkwork-database-sqlx",
  "sdkwork-routes-catalog-app-api",
  "sdkwork-web-bootstrap",
  "sdkwork-web-core",

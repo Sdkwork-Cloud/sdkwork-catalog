@@ -1,9 +1,11 @@
 pub mod app_catalog_router;
+pub mod http_route_manifest;
 pub mod routes;
 pub mod subject;
 pub mod web_bootstrap;
 
 pub use app_catalog_router::{app_catalog_router_with_postgres_pool, build_app_catalog_router};
+pub use http_route_manifest::gateway_route_manifest;
 pub use routes::{
     build_catalog_app_router_with_framework_postgres, build_catalog_app_router_with_postgres_pool,
 };
