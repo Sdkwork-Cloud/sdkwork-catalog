@@ -7,9 +7,7 @@
 use axum::Router;
 use sdkwork_catalog_service_host::CatalogServiceHost;
 use sdkwork_database_sqlx::DatabasePool;
-use sdkwork_web_bootstrap::{
-    ApiAssemblyContribution, DatabasePoolReadinessCheck, ReadinessCheck,
-};
+use sdkwork_web_bootstrap::{ApiAssemblyContribution, DatabasePoolReadinessCheck, ReadinessCheck};
 use std::sync::Arc;
 
 /// Indivisible host-neutral API assembly contribution (web-bootstrap contract).
@@ -33,12 +31,13 @@ pub async fn assemble_api_router(host: Arc<CatalogServiceHost>) -> ApiAssembly {
     let DatabasePool::Postgres(pool, _) = host.database_pool() else {
         panic!("catalog app router requires a PostgreSQL database pool");
     };
-    let router = sdkwork_routes_catalog_app_api::build_catalog_app_router_with_postgres_pool(
-        pool.clone(),
-    );
+    let router =
+        sdkwork_routes_catalog_app_api::build_catalog_app_router_with_postgres_pool(pool.clone());
     contribution_from(
         router,
-        Arc::new(sdkwork_web_bootstrap::AlwaysReady),
+        Arc::new(DatabasePoolReadinessCheck::new(
+            host.database_pool().clone(),
+        )),
     )
     .expect("catalog contribution contract is valid")
 }
@@ -57,8 +56,5 @@ pub async fn assemble_api_router_with_pool(pool: DatabasePool) -> Result<ApiAsse
         .clone();
     let router =
         sdkwork_routes_catalog_app_api::build_catalog_app_router_with_postgres_pool(postgres);
-    contribution_from(
-        router,
-        Arc::new(DatabasePoolReadinessCheck::new(pool)),
-    )
+    contribution_from(router, Arc::new(DatabasePoolReadinessCheck::new(pool)))
 }
