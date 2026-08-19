@@ -7,9 +7,7 @@ use axum::response::Response;
 use axum::routing::{get, patch, put};
 use axum::{Json, Router};
 use sdkwork_iam_context_service::IamAppContext;
-use sdkwork_merchandise_repository_sqlx::{
-    PostgresCommerceCatalogStore,
-};
+use sdkwork_merchandise_repository_sqlx::PostgresCommerceCatalogStore;
 use sdkwork_merchandise_service::{
     AddCartItemCommand, AddressListQuery, AttributeListQuery, CartRetrieveQuery, CategoryListQuery,
     CategoryRetrieveQuery, CreateAddressCommand, DeleteAddressCommand, ProductSkuListQuery,
